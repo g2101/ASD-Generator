@@ -13,9 +13,9 @@ function generateBBCode() {
         const isChecked = checkbox.checked;
 
         if (isChecked) {
-            bbcode += `[cb] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
+            bbcode += `[cb] [b]${text}[/b]\n`;
         } else {
-            bbcode += `[cbc] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
+            bbcode += `[cbc] [b]${text}[/b]\n`;
         }
     });
 
@@ -25,6 +25,7 @@ function generateBBCode() {
     const bbcodeOutput = document.getElementById('bbcode-output');
     bbcodeOutput.value = bbcode;
 }
+
 
 function formatLogDate(logDate) {
     // Convert the input date to a JavaScript Date object
