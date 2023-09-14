@@ -42,8 +42,4 @@ function copyToClipboard() {
     const bbcodeOutput = document.getElementById('bbcode-output');
     bbcodeOutput.select();
     document.execCommand('copy');
-    alert('BBCode copied to clipboard');
 }
-
-// Initial call to generateBBCode to populate the output textarea
-generateBBCode();
