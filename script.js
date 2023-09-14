@@ -1,42 +1,46 @@
-// Get the current date in UTC format (e.g., "14/SEP/2023" for today)
-function getCurrentUTCDate() {
-    const currentDate = new Date();
-    const options = { year: 'numeric', month: 'short', day: '2-digit' };
-    return currentDate.toLocaleDateString('en-US', options).toUpperCase();
-}
-
-// Update the date input with the current UTC date
-document.getElementById('logDate').value = getCurrentUTCDate();
-
-// Function to update the date
-function updateDate(value) {
-    if (value) {
-        // Use the selected date if available
-        document.getElementById('logDate').value = value;
-    } else {
-        // If no date is selected, autofill with the current UTC date
-        document.getElementById('logDate').value = getCurrentUTCDate();
-    }
-}
-
-// Function to generate BBCode
 function generateBBCode() {
-    const date = document.getElementById('logDate').value;
+    // Retrieve the date and format it as DD/MMM/YYYY
+    const logDate = document.getElementById('logDate').value;
+    const formattedDate = formatLogDate(logDate);
+
+    // Generate BBCode for the checkboxes
     const checkboxes = document.querySelectorAll('.bbcode-checkbox');
-    let bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none]\n[*][b]Date[/b]: ${date}\n\n[list=none]\n`;
-    
+    let bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none][*][b]Date[/b]: ${formattedDate}\n[list=none]`;
+
     checkboxes.forEach((checkbox) => {
-        if (checkbox.checked) {
-            const label = checkbox.nextElementSibling.textContent.trim();
-            bbcode += `[cb] [b]${label}[/b]\n`;
-        }
-        else {
-            bbcode += `[cbc] [b]${label}[/b][/cb]\n`;
+        const id = checkbox.id;
+        const label = document.querySelector(`label[for='${id}']`);
+        const text = label.textContent.trim();
+        const isChecked = checkbox.checked;
+
+        if (isChecked) {
+            bbcode += `[cb] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
+        } else {
+            bbcode += `[cb] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
         }
     });
 
-    bbcode += `[/list][/list][/divbox2]`;
+    bbcode += `[/list][/divbox2]`;
 
+    // Update the BBCode output textarea
     const bbcodeOutput = document.getElementById('bbcode-output');
     bbcodeOutput.value = bbcode;
+}
+
+function formatLogDate(logDate) {
+    // Convert the input date to a JavaScript Date object
+    const dateObj = new Date(logDate);
+
+    // Format the date as DD/MMM/YYYY (e.g., 14/SEP/2023)
+    const day = dateObj.getDate().toString().padStart(2, '0');
+    const month = dateObj.toLocaleString('default', { month: 'short' }).toUpperCase();
+    const year = dateObj.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+function copyToClipboard() {
+    const bbcodeOutput = document.getElementById('bbcode-output');
+    bbcodeOutput.select();
+    document.execCommand('copy');
+    alert('BBCode copied to clipboard');
 }
