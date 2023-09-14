@@ -44,5 +44,3 @@ function copyToClipboard() {
     alert('BBCode copied to clipboard');
 }
 
-// Initial call to generateBBCode to populate the output textarea
-generateBBCode();
