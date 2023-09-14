@@ -31,7 +31,7 @@ function generateBBCode() {
             bbcode += `[cb] [b]${label}[/b]\n`;
         }
         else {
-            bbcode += '[cbc] [b]${label}[/b][/cb]\n~;
+            bbcode += `[cbc] [b]${label}[/b][/cb]\n`;
         }
     });
 
