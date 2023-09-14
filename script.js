@@ -15,7 +15,7 @@ function generateBBCode() {
         if (isChecked) {
             bbcode += `[cb] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
         } else {
-            bbcode += `[cb=unchecked] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
+            bbcode += `[cb] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
         }
     });
 
