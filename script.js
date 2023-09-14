@@ -1,27 +1,48 @@
-// Function to generate BBCode
 function generateBBCode() {
-    const dateInput = document.getElementById('logDate').value;
-    
-    // Format the date as "DD/MMM/YYYY" (e.g., "09/SEP/2023")
-    const dateParts = dateInput.split('-'); // Assuming the input format is "YYYY-MM-DD"
-    const day = dateParts[2];
-    const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-    const month = monthNames[parseInt(dateParts[1]) - 1];
-    const year = dateParts[0];
-    const formattedDate = `${day}/${month}/${year}`;
-    
+    // Retrieve the date and format it as DD/MMM/YYYY
+    const logDate = document.getElementById('logDate').value;
+    const formattedDate = formatLogDate(logDate);
+
+    // Generate BBCode for the checkboxes
     const checkboxes = document.querySelectorAll('.bbcode-checkbox');
-    let bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none]\n[*][b]Date[/b]: ${formattedDate}\n\n[list=none]\n`;
-    
+    let bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none][*][b]Date[/b]: ${formattedDate}\n[list=none]`;
+
     checkboxes.forEach((checkbox) => {
-        if (checkbox.checked) {
-            const label = checkbox.nextElementSibling.textContent.trim();
-            bbcode += `[cb] [b]${label}[/b]\n`;
+        const label = checkbox.nextElementSibling;
+        const text = label.textContent.trim();
+        const isChecked = checkbox.checked;
+
+        if (isChecked) {
+            bbcode += `[cb] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
+        } else {
+            bbcode += `[cb=unchecked] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
         }
     });
 
-    bbcode += `[/list][/list][/divbox2]`;
+    bbcode += `[/list][/divbox2]`;
 
+    // Update the BBCode output textarea
     const bbcodeOutput = document.getElementById('bbcode-output');
     bbcodeOutput.value = bbcode;
 }
+
+function formatLogDate(logDate) {
+    // Convert the input date to a JavaScript Date object
+    const dateObj = new Date(logDate);
+
+    // Format the date as DD/MMM/YYYY (e.g., 14/SEP/2023)
+    const day = dateObj.getDate().toString().padStart(2, '0');
+    const month = dateObj.toLocaleString('default', { month: 'short' }).toUpperCase();
+    const year = dateObj.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+function copyToClipboard() {
+    const bbcodeOutput = document.getElementById('bbcode-output');
+    bbcodeOutput.select();
+    document.execCommand('copy');
+    alert('BBCode copied to clipboard');
+}
+
+// Initial call to generateBBCode to populate the output textarea
+generateBBCode();
