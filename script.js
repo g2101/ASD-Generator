@@ -30,6 +30,9 @@ function generateBBCode() {
             const label = checkbox.nextElementSibling.textContent.trim();
             bbcode += `[cb] [b]${label}[/b]\n`;
         }
+        else {
+            
+        }
     });
 
     bbcode += `[/list][/list][/divbox2]`;
