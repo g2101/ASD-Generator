@@ -6,7 +6,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: white; /* Reverted to white background */
+    background-color: #f5f5f5; /* Soft gray background */
     color: #333;
     display: flex;
     justify-content: center;
@@ -32,6 +32,7 @@ body {
 
 .header-text {
     font-size: 28px;
+    color: #333; /* Dark text color */
 }
 
 .content {
@@ -49,11 +50,13 @@ body {
 }
 
 .date-input label {
-    font-size: 18px; /* Set the font size to match the checkboxes */
+    font-size: 18px;
+    color: #555; /* Slightly darker text color */
 }
 
 .date-input input {
-    font-size: 18px; /* Set the font size to match the checkboxes */
+    font-size: 18px;
+    color: #333; /* Dark text color */
 }
 
 .checkbox-list ul {
@@ -77,10 +80,11 @@ body {
 .bbcode-checkbox + label {
     font-size: 18px;
     cursor: pointer;
+    color: #333; /* Dark text color */
 }
 
 .action-button {
-    background-color: #007BFF;
+    background-color: #007BFF; /* Blue color */
     color: white;
     border: none;
     border-radius: 5px;
@@ -91,7 +95,7 @@ body {
 }
 
 .action-button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Darker blue on hover */
 }
 
 .output {
@@ -106,6 +110,7 @@ body {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
+    color: #333; /* Dark text color */
 }
 
 .button-container {
@@ -118,9 +123,16 @@ body {
 
 .button-container button {
     display: block;
-    margin: 10px auto; /* Center the button horizontally and add equal vertical spacing */
+    margin: 10px auto;
 }
 
+/* Style for the "Go to Personnel Files" button (red) */
 .external-link {
-    text-decoration: none; /* Removes underline from links */
+    text-decoration: none;
+    color: white;
+    background-color: #ff5733; /* Red color */
+}
+
+.external-link:hover {
+    background-color: #d73c0f; /* Darker red on hover */
 }
