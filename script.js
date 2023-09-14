@@ -8,15 +8,14 @@ function generateBBCode() {
     let bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none][*][b]Date[/b]: ${formattedDate}\n[list=none]`;
 
     checkboxes.forEach((checkbox) => {
-        const id = checkbox.id;
-        const label = document.querySelector(`label[for='${id}']`);
+        const label = checkbox.nextElementSibling;
         const text = label.textContent.trim();
         const isChecked = checkbox.checked;
 
         if (isChecked) {
             bbcode += `[cb] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
         } else {
-            bbcode += `[cb] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
+            bbcode += `[cbc] [b]${text}[/b]: ${checkbox.getAttribute('data-points')} points\n`;
         }
     });
 
@@ -44,3 +43,6 @@ function copyToClipboard() {
     document.execCommand('copy');
     alert('BBCode copied to clipboard');
 }
+
+// Initial call to generateBBCode to populate the output textarea
+generateBBCode();
