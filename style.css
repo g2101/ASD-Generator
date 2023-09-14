@@ -6,7 +6,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: white; /* Reverted to white background */
+    background-color: lightgrey;
     color: #333;
     display: flex;
     justify-content: center;
