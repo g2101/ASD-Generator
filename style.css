@@ -1,0 +1,126 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white; /* Reverted to white background */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header-text {
+    font-size: 28px;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.date-input {
+    margin-bottom: 10px;
+}
+
+.date-input label {
+    font-size: 18px; /* Set the font size to match the checkboxes */
+}
+
+.date-input input {
+    font-size: 18px; /* Set the font size to match the checkboxes */
+}
+
+.checkbox-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.checkbox-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.bbcode-checkbox {
+    margin-right: 10px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.bbcode-checkbox + label {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.action-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 24px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: #0056b3;
+}
+
+.output {
+    flex: 1;
+}
+
+.bbcode-output textarea {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-container button {
+    display: block;
+    margin: 10px auto; /* Center the button horizontally and add equal vertical spacing */
+}
+
+.external-link {
+    text-decoration: none; /* Removes underline from links */
+}
