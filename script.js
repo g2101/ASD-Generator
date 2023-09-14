@@ -1,7 +1,10 @@
 function generateBBCode() {
-    // Retrieve the date and format it as DD/MMM/YYYY
-    const logDate = document.getElementById('logDate').value;
-    const formattedDate = formatLogDate(logDate);
+    // Get the current date in UTC
+    const currentUTCDate = new Date();
+    const day = currentUTCDate.getUTCDate().toString().padStart(2, '0');
+    const month = currentUTCDate.toLocaleString('default', { month: 'short', timeZone: 'UTC' }).toUpperCase();
+    const year = currentUTCDate.getUTCFullYear();
+    const formattedDate = `${day}/${month}/${year}`;
 
     // Generate BBCode for the checkboxes
     const checkboxes = document.querySelectorAll('.bbcode-checkbox');
@@ -13,9 +16,9 @@ function generateBBCode() {
         const isChecked = checkbox.checked;
 
         if (isChecked) {
-            bbcode += `[cbc] [b]${text}[/b]\n`;
-        } else {
             bbcode += `[cb] [b]${text}[/b]\n`;
+        } else {
+            bbcode += `[cbc] [b]${text}[/b]\n`;
         }
     });
 
@@ -24,18 +27,6 @@ function generateBBCode() {
     // Update the BBCode output textarea
     const bbcodeOutput = document.getElementById('bbcode-output');
     bbcodeOutput.value = bbcode;
-}
-
-
-function formatLogDate(logDate) {
-    // Convert the input date to a JavaScript Date object
-    const dateObj = new Date(logDate);
-
-    // Format the date as DD/MMM/YYYY (e.g., 14/SEP/2023)
-    const day = dateObj.getDate().toString().padStart(2, '0');
-    const month = dateObj.toLocaleString('default', { month: 'short' }).toUpperCase();
-    const year = dateObj.getFullYear();
-    return `${day}/${month}/${year}`;
 }
 
 function copyToClipboard() {
