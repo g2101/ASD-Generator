@@ -90,7 +90,7 @@ function savePersonnelFileLink() {
     // Set the expiration date to a very large value (e.g., 10 years from now)
     const expirationDate = new Date();
     expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
-    document.cookie = `personnelFileLink=${postingLink}; expires=${expirationDate.toUTCString()}`;
+    document.cookie = `personnelFileLink=${linkValue}; expires=${expirationDate.toUTCString()}`;
 
     // Update the link for "Go to Personnel File" button
     const personnelFilesLink = document.getElementById("personnel-files-link"); 
@@ -98,7 +98,7 @@ function savePersonnelFileLink() {
 
     // Hide the input section and show the rest of the page
     showSections();
-    return postingLink;
+    return linkValue;
   }
 }
 
