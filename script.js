@@ -80,7 +80,7 @@ function savePersonnelFileLink() {
     var encodedLink = encodeURIComponent(linkValue);
 
     const expirationDate = new Date();
-    expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
+    expirationDate.setFullYear(expirationDate.getFullYear() + 10);
     document.cookie = `personnelFileLink=${encodedLink}; expires=${expirationDate.toUTCString()}`;
 
     const personnelFilesLink = document.getElementById("personnel-files-link"); 
