@@ -59,22 +59,6 @@ body {
   font-size: 18px;
 }
 
-.link-input label {
-  font-size: 18px; 
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center
-}
-
-.link-input input {
-  font-size: 18px; 
-  padding: px;
-  display: flex;
-  justify-content: center;
-  align-items: center
-}
-
 .checkbox-list ul {
   list-style: none;
   padding: 0;
