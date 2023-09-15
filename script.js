@@ -111,36 +111,6 @@ function showSections() {
   }
 }
 
-function generateBBCode() {
-  const currentUTCDate = new Date();
-  const day = currentUTCDate.getUTCDate().toString().padStart(2, "0");
-  const month = currentUTCDate
-    .toLocaleString("default", { month: "short", timeZone: "UTC" })
-    .toUpperCase();
-  const year = currentUTCDate.getUTCFullYear();
-  const formattedDate = `${day}/${month}/${year}`;
-
-  const checkboxes = document.querySelectorAll(".bbcode-checkbox");
-  let bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none][*][b]Date[/b]: ${formattedDate}\n[list=none]`;
-
-  checkboxes.forEach((checkbox) => {
-    const label = checkbox.nextElementSibling;
-    const text = label.textContent.trim();
-    const isChecked = checkbox.checked;
-
-    if (isChecked) {
-      bbcode += `[cbc] [b]${text}[/b]\n`;
-    } else {
-      bbcode += `[cb] [b]${text}[/b]\n`;
-    }
-  });
-
-  bbcode += `[/list][/divbox2]`;
-
-  const bbcodeOutput = document.getElementById("bbcode-output");
-  bbcodeOutput.value = bbcode;
-}
-
 function initializePage() {
   showSections(); 
 }
