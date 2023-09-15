@@ -35,7 +35,6 @@ function copyToClipboard() {
   document.execCommand("copy");
 }
 
-// Function to check if the personnel file link exists in cookies
 function personnelFileLinkExists() {
   const cookies = document.cookie.split(";");
 
@@ -47,20 +46,6 @@ function personnelFileLinkExists() {
   }
 
   return false;
-}
-
-// Function to retrieve the saved personnel file link from cookies
-function getSavedPersonnelFileLink() {
-  const cookies = document.cookie.split(";");
-
-  for (const cookie of cookies) {
-    const [name, value] = cookie.trim().split("=");
-    if (name === "personnelFileLink") {
-      return decodeURIComponent(value);
-    }
-  }
-
-  return "#"; // Return a default value if the link is not found
 }
 
 // Function to save the personnel file link to cookies (with "posting" mode)
@@ -83,13 +68,28 @@ function savePersonnelFileLink() {
       expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
       document.cookie = `personnelFileLink=${postingLink}; expires=${expirationDate.toUTCString()}`;
       
-      // Hide the input section and show the rest of the page
-      showSections();
-    }
+    showSections();
   }
 }
 
-// Function to clear the input field and checkboxes
+function showSections() {
+  const personnelFileSection = document.getElementById("personnel-file-section");
+  const checkboxSection = document.getElementById("checkbox-section");
+  const outputSection = document.getElementById("output-section");
+
+  if (personnelFileLinkExists()) {
+    personnelFileSection.style.display = "none";
+    checkboxSection.style.display = "block";
+    outputSection.style.display = "block";
+  } else {
+    personnelFileSection.style.display = "block";
+    checkboxSection.style.display = "none";
+    outputSection.style.display = "none";
+  }
+}
+
+showSections();
+
 function clearInputs() {
   const personnelFileLinkInput = document.getElementById("personnel-file-link");
   personnelFileLinkInput.value = "";
@@ -99,31 +99,6 @@ function clearInputs() {
     checkbox.checked = false;
   });
 
-  // Clear the BBCode output
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = "";
-}
-
-// Function to show/hide sections based on personnel file link existence
-function showSections() {
-  const personnelFileSection = document.getElementById("personnel-file-section");
-  const checkboxSection = document.getElementById("checkbox-section");
-  const outputSection = document.getElementById("output-section");
-  const personnelFilesLink = document.getElementById("personnel-files-link");
-
-  if (personnelFileLinkExists()) {
-    personnelFileSection.style.display = "none";
-    checkboxSection.style.display = "block";
-    outputSection.style.display = "block";
-
-    // Update the link for "Go to Personnel File" button
-    personnelFilesLink.href = getSavedPersonnelFileLink();
-  } else {
-    personnelFileSection.style.display = "block";
-    checkboxSection.style.display = "none";
-    outputSection.style.display = "none";
-    
-    // Reset the link for "Go to Personnel File" button to default
-    personnelFilesLink.href = "#";
-  }
 }
