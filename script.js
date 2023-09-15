@@ -82,17 +82,9 @@ function savePersonnelFileLink() {
   const linkValue = personnelFileLinkInput.value;
 
   if (linkValue !== "") {
-    // Extract the forum ID and topic ID from the user input link
-    const match = linkValue.match(/f=(\d+)&t=(\d+)/);
-    if (match) {
-      const forumID = match[1];
-      const topicID = match[2];
-      
-      // Construct the link in "posting" mode
       const postingLink = personnelFileLinkInput.value;
       alert(postingLink);
       
-      // Set the expiration date to a very large value (e.g., 10 years from now)
       const expirationDate = new Date();
       expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
       document.cookie = `personnelFileLink=${postingLink}; expires=${expirationDate.toUTCString()}`;
