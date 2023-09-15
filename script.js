@@ -87,4 +87,17 @@ function showSections() {
 // Call showSections to determine initial section visibility
 showSections();
 
-// Rest of your script...
+// Function to clear the input field and checkboxes
+function clearInputs() {
+  const personnelFileLinkInput = document.getElementById("personnel-file-link");
+  personnelFileLinkInput.value = "";
+
+  const checkboxes = document.querySelectorAll(".bbcode-checkbox");
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+
+  // Clear the BBCode output
+  const bbcodeOutput = document.getElementById("bbcode-output");
+  bbcodeOutput.value = "";
+}
