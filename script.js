@@ -88,6 +88,9 @@ function savePersonnelFileLink() {
     alert("success")
     //showSections();
   }
+  else {
+    alert("Please enter a link to your personnel file");
+  }
 }
 
 function clearInputs() {
