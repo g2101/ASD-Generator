@@ -26,17 +26,18 @@ function generateBBCode() {
 
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = bbcode;
+  return copytoClipboard();
   bbcodeOutput.select();
   document.execCommand("copy");
   alert("Copied to clipboard!");
 }
-/*
+
 function copyToClipboard() {
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.select();
   document.execCommand("copy");
   alert("Copied to clipboard!");
-}*/
+}
 
 function personnelFileLinkExists() {
   const cookies = document.cookie.split(";");
