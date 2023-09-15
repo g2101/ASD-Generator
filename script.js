@@ -74,10 +74,8 @@ function getSavedPersonnelFileLink() {
 }
 
 function savePersonnelFileLink() {
-  const linkValue = document.getElementById("personnel-file-link").value.trim();
-
-  if (linkValue !== "") {
-    var encodedLink = encodeURIComponent(linkValue);
+  if (document.getElementById("personnel-file-link").value.trim() !== "") {
+    var encodedLink = encodeURIComponent(document.getElementById("personnel-file-link").value.trim());
 
     const expirationDate = new Date();
     expirationDate.setFullYear(expirationDate.getFullYear() + 10);
