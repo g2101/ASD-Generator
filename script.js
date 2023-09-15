@@ -26,10 +26,15 @@ function generateBBCode() {
 
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = bbcode;
-  bbcodeOutput.select();
-  //document.execCommand("copy");
+  async(1000)
+  var copyText = document.getElementById("bbcode-output");
+
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+
+   // Copy the text inside the text field
   navigator.clipboard.writeText(copyText.value);
-  alert("Copied to clipboard!");
 }
 
 function copyToClipboard() {
