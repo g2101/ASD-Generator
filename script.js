@@ -30,13 +30,13 @@ function generateBBCode() {
   document.execCommand("copy");
   alert("Copied to clipboard!");
 }
-
+/*
 function copyToClipboard() {
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.select();
   document.execCommand("copy");
   alert("Copied to clipboard!");
-}
+}*/
 
 function personnelFileLinkExists() {
   const cookies = document.cookie.split(";");
@@ -99,6 +99,7 @@ function clearInputs() {
   checkboxes.forEach((checkbox) => {
     checkbox.checked = false;
   });
+  
 
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = "";
@@ -155,12 +156,6 @@ function generateBBCode() {
 
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = bbcode;
-}
-
-function copyToClipboard() {
-  const bbcodeOutput = document.getElementById("bbcode-output");
-  bbcodeOutput.select();
-  document.execCommand("copy");
 }
 
 function initializePage() {
