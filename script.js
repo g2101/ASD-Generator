@@ -8,7 +8,6 @@ function generateBBCode() {
   const year = currentUTCDate.getUTCFullYear();
   const formattedDate = `${day}/${month}/${year}`;
 
-  // Generate BBCode for the checkboxes
   const checkboxes = document.querySelectorAll(".bbcode-checkbox");
   let bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none][*][b]Date[/b]: ${formattedDate}\n[list=none]`;
 
@@ -26,7 +25,6 @@ function generateBBCode() {
 
   bbcode += `[/list][/divbox2]`;
 
-  // Update the BBCode output textarea
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = bbcode;
 }
@@ -37,7 +35,6 @@ function copyToClipboard() {
   document.execCommand("copy");
 }
 
-/// Function to check if the personnel file link exists in cookies
 function personnelFileLinkExists() {
   const cookies = document.cookie.split(";");
 
@@ -51,23 +48,19 @@ function personnelFileLinkExists() {
   return false;
 }
 
-// Function to save the personnel file link to cookies (never expires)
 function savePersonnelFileLink() {
   const personnelFileLinkInput = document.getElementById("personnel-file-link");
   const linkValue = personnelFileLinkInput.value.trim();
 
   if (linkValue !== "") {
-    // Set the expiration date to a very large value (e.g., 10 years from now)
     const expirationDate = new Date();
     expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
     document.cookie = `personnelFileLink=${linkValue}; expires=${expirationDate.toUTCString()}`;
     
-    // Hide the input section and show the rest of the page
     showSections();
   }
 }
 
-// Function to show/hide sections based on personnel file link existence
 function showSections() {
   const personnelFileSection = document.getElementById("personnel-file-section");
   const checkboxSection = document.getElementById("checkbox-section");
@@ -84,11 +77,9 @@ function showSections() {
   }
 }
 
-// Call showSections to determine initial section visibility
 showSections();
 
-// Function to clear the input field and checkboxes
-function clear() {
+function clearInputs() {
   const personnelFileLinkInput = document.getElementById("personnel-file-link");
   personnelFileLinkInput.value = "";
 
@@ -97,7 +88,6 @@ function clear() {
     checkbox.checked = false;
   });
 
-  // Clear the BBCode output
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = "";
 }
