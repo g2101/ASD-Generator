@@ -74,7 +74,8 @@ function getSavedPersonnelFileLink() {
 }
 
 function savePersonnelFileLink() {
-  if (document.getElementById("personnel-file-link").value.trim() !== "") {
+  let linkValue = document.getElementById("personnel-file-link").value.trim(); 
+  if (linkValue !== "") {
     var encodedLink = encodeURIComponent(document.getElementById("personnel-file-link").value.trim());
 
     const expirationDate = new Date();
