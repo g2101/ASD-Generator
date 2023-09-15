@@ -26,7 +26,6 @@ function generateBBCode() {
 
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = bbcode;
-  return copyToClipboard();
   bbcodeOutput.select();
   document.execCommand("copy");
   alert("Copied to clipboard!");
