@@ -32,7 +32,6 @@ function copyToClipboard() {
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.select();
   document.execCommand("copy");
-  alert("Copied to clipboard!");
 }
 
 function personnelFileLinkExists() {
