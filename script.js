@@ -20,15 +20,14 @@ function generateBBCode() {
     } else {
       bbcode += `[cb] [b]${text}[/b]\n`;
     }
-    const bbcodeOutput = document.getElementById("bbcode-output");
-    bbcodeOutput.select();
-    document.execCommand("copy");
   });
 
   bbcode += `[/list][/divbox2]`;
 
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = bbcode;
+  bbcodeOutput.select();
+  document.execCommand("copy");
 }
 
 function copyToClipboard() {
