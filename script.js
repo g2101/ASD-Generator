@@ -33,6 +33,7 @@ function copyToClipboard() {
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.select();
   document.execCommand("copy");
+  window.open(encodedLink)
 }
 
 function personnelFileLinkExists() {
