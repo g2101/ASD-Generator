@@ -47,19 +47,6 @@ function personnelFileLinkExists() {
   return false;
 }
 
-function personnelFileLinkExists() {
-  const cookies = document.cookie.split(";");
-
-  for (const cookie of cookies) {
-    const [name] = cookie.trim().split("=");
-    if (name === "personnelFileLink") {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 function getSavedPersonnelFileLink() {
   const cookies = document.cookie.split(";");
 
@@ -75,7 +62,7 @@ function getSavedPersonnelFileLink() {
 
 function savePersonnelFileLink() {
   if (document.getElementById("personnel-file-link").value.trim() !== "") {
-    var encodedLink = encodeURIComponent(document.getElementById("personnel-file-link").value.trim());
+    let encodedLink = encodeURIComponent(document.getElementById("personnel-file-link").value.trim());
 
     const expirationDate = new Date();
     expirationDate.setFullYear(expirationDate.getFullYear() + 10);
