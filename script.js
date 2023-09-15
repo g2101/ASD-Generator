@@ -89,7 +89,7 @@ function savePersonnelFileLink() {
       const topicID = match[2];
       
       // Construct the link in "posting" mode
-      const postingLink = personnelFileLinkInput;
+      const postingLink = personnelFileLinkInput.value.trim();
       
       // Set the expiration date to a very large value (e.g., 10 years from now)
       const expirationDate = new Date();
