@@ -82,9 +82,6 @@ function savePersonnelFileLink() {
   const linkValue = personnelFileLinkInput.value;
 
   if (linkValue !== "") {
-    // Extract the forum ID and topic ID from the user input link
-    const match = linkValue.match(/f=(\d+)&t=(\d+)/);
-
     // Construct the link in "posting" mode
     const postingLink = personnelFileLinkInput.value;
     alert(postingLink);
