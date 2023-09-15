@@ -79,12 +79,13 @@ function getSavedPersonnelFileLink() {
 // Function to save the personnel file link to cookies (with "posting" mode)
 function savePersonnelFileLink() {
   const personnelFileLinkInput = document.getElementById("personnel-file-link");
-  const linkValue = personnelFileLinkInput.value;
+  const postingLink = personnelFileLinkInput.value;
 
-  if (linkValue !== "") {
-    // Construct the link in "posting" mode
+  if (postingLink !== "") {
     const postingLink = personnelFileLinkInput.value;
     alert(postingLink);
+
+    // https://lspd.gta.world/viewtopic.php?f=684&t=94290
 
     // Set the expiration date to a very large value (e.g., 10 years from now)
     const expirationDate = new Date();
@@ -92,7 +93,7 @@ function savePersonnelFileLink() {
     document.cookie = `personnelFileLink=${postingLink}; expires=${expirationDate.toUTCString()}`;
 
     // Update the link for "Go to Personnel File" button
-    let personnelFilesLink = document.getElementById("personnel-files-link"); //! FIGURE OUT!!!!
+    const personnelFilesLink = document.getElementById("personnel-files-link"); //! FIGURE OUT!!!!
     personnelFilesLink.href = postingLink;
 
     // Hide the input section and show the rest of the page
