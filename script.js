@@ -26,7 +26,7 @@ function generateBBCode() {
 
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = bbcode;
-  async(1000)
+
   var copyText = document.getElementById("bbcode-output");
 
   // Select the text field
@@ -35,6 +35,7 @@ function generateBBCode() {
 
    // Copy the text inside the text field
   navigator.clipboard.writeText(copyText.value);
+  alert("Copied the text: " + copyText.value);
 }
 
 function copyToClipboard() {
