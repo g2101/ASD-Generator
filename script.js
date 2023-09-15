@@ -35,6 +35,7 @@ function copyToClipboard() {
   document.execCommand("copy");
 }
 
+// Function to check if the personnel file link exists in cookies
 function personnelFileLinkExists() {
   const cookies = document.cookie.split(";");
 
@@ -46,6 +47,61 @@ function personnelFileLinkExists() {
   }
 
   return false;
+}
+
+// Function to retrieve the saved personnel file link from cookies
+function getSavedPersonnelFileLink() {
+  const cookies = document.cookie.split(";");
+
+  for (const cookie of cookies) {
+    const [name, value] = cookie.trim().split("=");
+    if (name === "personnelFileLink") {
+      return decodeURIComponent(value);
+    }
+  }
+
+  return "#"; // Return a default value if the link is not found
+}
+
+// Function to save the personnel file link to cookies (with "posting" mode)
+function savePersonnelFileLink() {
+  const personnelFileLinkInput = document.getElementById("personnel-file-link");
+  const linkValue = personnelFileLinkInput.value.trim();
+
+  if (linkValue !== "") {
+    // Extract the forum ID and topic ID from the user input link
+    const match = linkValue.match(/f=(\d+)&t=(\d+)/);
+    if (match) {
+      const forumID = match[1];
+      const topicID = match[2];
+      
+      // Construct the link in "posting" mode
+      const postingLink = `https://lspd.gta.world/posting.php?mode=reply&f=${forumID}&t=${topicID}`;
+      
+      // Set the expiration date to a very large value (e.g., 10 years from now)
+      const expirationDate = new Date();
+      expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
+      document.cookie = `personnelFileLink=${postingLink}; expires=${expirationDate.toUTCString()}`;
+      
+      // Hide the input section and show the rest of the page
+      showSections();
+    }
+  }
+}
+
+// Function to clear the input field and checkboxes
+function clearInputs() {
+  const personnelFileLinkInput = document.getElementById("personnel-file-link");
+  personnelFileLinkInput.value = "";
+
+  const checkboxes = document.querySelectorAll(".bbcode-checkbox");
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+
+  // Clear the BBCode output
+  const bbcodeOutput = document.getElementById("bbcode-output");
+  bbcodeOutput.value = "";
 }
 
 // Function to show/hide sections based on personnel file link existence
@@ -70,19 +126,4 @@ function showSections() {
     // Reset the link for "Go to Personnel File" button to default
     personnelFilesLink.href = "#";
   }
-}
-
-showSections()
-
-function clearInputs() {
-  const personnelFileLinkInput = document.getElementById("personnel-file-link");
-  personnelFileLinkInput.value = "";
-
-  const checkboxes = document.querySelectorAll(".bbcode-checkbox");
-  checkboxes.forEach((checkbox) => {
-    checkbox.checked = false;
-  });
-
-  const bbcodeOutput = document.getElementById("bbcode-output");
-  bbcodeOutput.value = "";
 }
