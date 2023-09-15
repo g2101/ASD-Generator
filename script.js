@@ -74,19 +74,20 @@ function getSavedPersonnelFileLink() {
 }
 
 function savePersonnelFileLink() {
-  const linkValue = document.getElementById("personnel-file-link").value.trim();
-
-  if (linkValue !== "") {
-    var encodedLink = encodeURIComponent(linkValue);
+  if (document.getElementById("personnel-file-link").value.trim() !== "") {
+    var encodedLink = encodeURIComponent(document.getElementById("personnel-file-link").value.trim());
 
     const expirationDate = new Date();
-    expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
+    expirationDate.setFullYear(expirationDate.getFullYear() + 10);
     document.cookie = `personnelFileLink=${encodedLink}; expires=${expirationDate.toUTCString()}`;
 
     const personnelFilesLink = document.getElementById("personnel-files-link"); 
     personnelFilesLink.href = encodedLink;
 
     showSections();
+  }
+  else {
+    alert("Please enter a link to a personnel file.");
   }
 }
 
