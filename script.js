@@ -86,18 +86,18 @@ function savePersonnelFileLink() {
     // Construct the link in "posting" mode
     alert(linkValue);
 
-    var encoded = encodeURIComponent(linkValue);
-    alert(encoded);
+    var encodedLink = encodeURIComponent(linkValue);
+    alert(encodedLink);
 
   
     // Set the expiration date to a very large value (e.g., 10 years from now)
     const expirationDate = new Date();
     expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
-    document.cookie = `personnelFileLink=${encoded}; expires=${expirationDate.toUTCString()}`;
+    document.cookie = `personnelFileLink=${encodedLink}; expires=${expirationDate.toUTCString()}`;
 
     // Update the link for "Go to Personnel File" button
     const personnelFilesLink = document.getElementById("personnel-files-link"); 
-    personnelFilesLink.href = encoded;
+    personnelFilesLink.href = encodedLink;
 
     // Hide the input section and show the rest of the page
     showSections();
