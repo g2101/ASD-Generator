@@ -37,7 +37,7 @@ function copyToClipboard() {
   document.execCommand("copy");
 }
 
-// Function to check if the personnel file link exists in cookies
+/// Function to check if the personnel file link exists in cookies
 function personnelFileLinkExists() {
   const cookies = document.cookie.split(";");
 
@@ -49,6 +49,22 @@ function personnelFileLinkExists() {
   }
 
   return false;
+}
+
+// Function to save the personnel file link to cookies (never expires)
+function savePersonnelFileLink() {
+  const personnelFileLinkInput = document.getElementById("personnel-file-link");
+  const linkValue = personnelFileLinkInput.value.trim();
+
+  if (linkValue !== "") {
+    // Set the expiration date to a very large value (e.g., 10 years from now)
+    const expirationDate = new Date();
+    expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
+    document.cookie = `personnelFileLink=${linkValue}; expires=${expirationDate.toUTCString()}`;
+    
+    // Hide the input section and show the rest of the page
+    showSections();
+  }
 }
 
 // Function to show/hide sections based on personnel file link existence
@@ -70,3 +86,5 @@ function showSections() {
 
 // Call showSections to determine initial section visibility
 showSections();
+
+// Rest of your script...
