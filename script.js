@@ -26,13 +26,14 @@ function generateBBCode() {
 
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = bbcode;
-  async(1000)
+  setTimeout(copyToClipboard, 500) 
 }
 
 function copyToClipboard() {
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.select();
   document.execCommand("copy");
+  alert("Copied to clipboard!");
 }
 
 function personnelFileLinkExists() {
