@@ -84,7 +84,7 @@ function savePersonnelFileLink() {
   if (linkValue !== "") {
     // Construct the link in "posting" mode
     var postingLink = personnelFileLinkInput;
-    alert(postingLink);
+    alert(personnelFileLinkInput);
 
 
     /*
