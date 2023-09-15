@@ -36,3 +36,57 @@ function copyToClipboard() {
   bbcodeOutput.select();
   document.execCommand("copy");
 }
+
+// Function to save the personnel file link in cookies
+function savePersonnelFileLink() {
+  const personnelFileLinkInput = document.getElementById("personnel-file-link");
+  const personnelFileLink = personnelFileLinkInput.value;
+
+  // Check if the link is not empty
+  if (personnelFileLink.trim() !== "") {
+    // Save the link in a cookie that expires in 30 days
+    document.cookie = `personnelFileLink=${encodeURIComponent(personnelFileLink)}; expires=${getCookieExpiration(30)}`;
+
+    // Clear the input field
+    personnelFileLinkInput.value = "";
+
+    // Notify the user that the link has been saved (you can customize this part)
+    alert("Personnel file link saved successfully!");
+  } else {
+    // Notify the user that the input is empty (you can customize this part)
+    alert("Please enter a personnel file link.");
+  }
+}
+
+// Function to retrieve the personnel file link from cookies
+function getPersonnelFileLink() {
+  const cookies = document.cookie.split(";");
+
+  for (const cookie of cookies) {
+    const [name, value] = cookie.trim().split("=");
+    if (name === "personnelFileLink") {
+      return decodeURIComponent(value);
+    }
+  }
+
+  return null;
+}
+
+// Function to set the personnel file link if it exists in cookies
+function setPersonnelFileLink() {
+  const personnelFileLink = getPersonnelFileLink();
+  if (personnelFileLink) {
+    const personnelFileLinkInput = document.getElementById("personnel-file-link");
+    personnelFileLinkInput.value = personnelFileLink;
+  }
+}
+
+// Get the expiration date for a cookie in days
+function getCookieExpiration(days) {
+  const date = new Date();
+  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  return date.toUTCString();
+}
+
+// Call setPersonnelFileLink to set the link if it exists in cookies
+setPersonnelFileLink();
