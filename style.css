@@ -53,6 +53,8 @@ body {
   max-width: 500px;
   padding: 20px;
   border: none;
+  text-align: center;
+  align-items: center
   justify-content: center;
   font-size: 18px;
 }
