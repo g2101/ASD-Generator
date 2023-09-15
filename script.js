@@ -18,9 +18,9 @@ function generateBBCode() {
     const isChecked = checkbox.checked;
 
     if (isChecked) {
-      bbcode += `[cb] [b]${text}[/b]\n`;
-    } else {
       bbcode += `[cbc] [b]${text}[/b]\n`;
+    } else {
+      bbcode += `[cb] [b]${text}[/b]\n`;
     }
   });
 
