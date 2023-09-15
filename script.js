@@ -33,7 +33,6 @@ function copyToClipboard() {
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.select();
   document.execCommand("copy");
-  window.open(encodedLink)
 }
 
 function personnelFileLinkExists() {
@@ -79,29 +78,19 @@ function getSavedPersonnelFileLink() {
 
 // Function to save the personnel file link to cookies (with "posting" mode)
 function savePersonnelFileLink() {
-  const personnelFileLinkInput = document.getElementById("personnel-file-link");
-  const linkValue = personnelFileLinkInput.value.trim();
+  const linkValue = document.getElementById("personnel-file-link").value.trim();
 
   if (linkValue !== "") {
-    // Construct the link in "posting" mode
-    alert(linkValue);
-
     var encodedLink = encodeURIComponent(linkValue);
-    alert(encodedLink);
 
-  
-    // Set the expiration date to a very large value (e.g., 10 years from now)
     const expirationDate = new Date();
     expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
     document.cookie = `personnelFileLink=${encodedLink}; expires=${expirationDate.toUTCString()}`;
 
-    // Update the link for "Go to Personnel File" button
     const personnelFilesLink = document.getElementById("personnel-files-link"); 
     personnelFilesLink.href = encodedLink;
 
-    // Hide the input section and show the rest of the page
     showSections();
-    return encodedLink
   }
 }
 
