@@ -88,7 +88,7 @@ function showSections() {
 showSections();
 
 // Function to clear the input field and checkboxes
-function clearInputs() {
+function clear() {
   const personnelFileLinkInput = document.getElementById("personnel-file-link");
   personnelFileLinkInput.value = "";
 
