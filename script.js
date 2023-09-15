@@ -85,8 +85,8 @@ function savePersonnelFileLink() {
 
     const personnelFilesLink = document.getElementById("personnel-files-link"); 
     personnelFilesLink.href = encodedLink;
-
-    showSections();
+    alert("success")
+    //showSections();
   }
 }
 
