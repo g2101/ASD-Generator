@@ -101,6 +101,7 @@ function savePersonnelFileLink() {
 
     // Hide the input section and show the rest of the page
     showSections();
+    return encodedLink
   }
 }
 
