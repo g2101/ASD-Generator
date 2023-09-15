@@ -11,6 +11,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
   margin: 0;
 }
 
@@ -20,8 +21,7 @@ body {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   width: 100%;
-  max-width: 35%;
-  max-height: 80%;
+  max-width: 500px;
   padding: 20px;
 }
 
@@ -105,7 +105,7 @@ body {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .button-container {
