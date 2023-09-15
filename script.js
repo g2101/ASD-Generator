@@ -82,20 +82,24 @@ function savePersonnelFileLink() {
   const linkValue = personnelFileLinkInput.value;
 
   if (linkValue !== "") {
-      const postingLink = personnelFileLinkInput.value;
-      alert(postingLink);
-      
-      const expirationDate = new Date();
-      expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
-      document.cookie = `personnelFileLink=${postingLink}; expires=${expirationDate.toUTCString()}`;
-      
-      // Update the link for "Go to Personnel File" button
-      let personnelFilesLink = document.getElementById("personnel-files-link"); //! FIGURE OUT!!!!
-      personnelFilesLink.href = postingLink;
-      
-      // Hide the input section and show the rest of the page
-      showSections();
-    }
+    // Extract the forum ID and topic ID from the user input link
+    const match = linkValue.match(/f=(\d+)&t=(\d+)/);
+
+    // Construct the link in "posting" mode
+    const postingLink = personnelFileLinkInput.value;
+    alert(postingLink);
+
+    // Set the expiration date to a very large value (e.g., 10 years from now)
+    const expirationDate = new Date();
+    expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
+    document.cookie = `personnelFileLink=${postingLink}; expires=${expirationDate.toUTCString()}`;
+
+    // Update the link for "Go to Personnel File" button
+    let personnelFilesLink = document.getElementById("personnel-files-link"); //! FIGURE OUT!!!!
+    personnelFilesLink.href = postingLink;
+
+    // Hide the input section and show the rest of the page
+    showSections();
   }
 }
 
@@ -116,7 +120,9 @@ function clearInputs() {
 
 // Function to show/hide sections based on personnel file link existence
 function showSections() {
-  const personnelFileSection = document.getElementById("personnel-file-section");
+  const personnelFileSection = document.getElementById(
+    "personnel-file-section"
+  );
   const checkboxSection = document.getElementById("checkbox-section");
   const outputSection = document.getElementById("output-section");
   let personnelFilesLink = document.getElementById("personnel-files-link");
@@ -132,7 +138,7 @@ function showSections() {
     personnelFileSection.style.display = "block";
     checkboxSection.style.display = "none";
     outputSection.style.display = "none";
-    
+
     // Reset the link for "Go to Personnel File" button to default
     personnelFilesLink.href = "#";
   }
