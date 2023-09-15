@@ -1,49 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ASD Patrol Log Generator</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="TctKg6h.png"/>
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="TctKg6h.png" />
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1 class="header-text">ASD Patrol Log Generator</h1>
+      <div class="header">
+        <h1 class="header-text">ASD Patrol Log Generator</h1>
+      </div>
+      <div class="content">
+        <div class="form">
+          <div class="checkbox-list">
+            <ul>
+              <li>
+                <input
+                  type="checkbox"
+                  class="bbcode-checkbox"
+                  id="pursuitDeployment"
+                  data-points="2"
+                /><label for="pursuitDeployment"
+                  >Pursuit Deployment: 2 points</label
+                >
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  class="bbcode-checkbox"
+                  id="otherDeployment"
+                  data-points="2"
+                /><label for="otherDeployment"
+                  >Other Deployment: 2 points</label
+                >
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  class="bbcode-checkbox"
+                  id="30MinPatrol"
+                  data-points="3"
+                /><label for="30MinPatrol">30+ Minute Patrol: 3 points</label>
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  class="bbcode-checkbox"
+                  id="60MinPatrol"
+                  data-points="4"
+                /><label for="60MinPatrol">60+ Minute Patrol: 4 points</label>
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  class="bbcode-checkbox"
+                  id="90MinPatrol"
+                  data-points="5"
+                /><label for="90MinPatrol">90+ Minute Patrol: 5 points</label>
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  class="bbcode-checkbox"
+                  id="eventDeployment"
+                  data-points="2"
+                /><label for="eventDeployment"
+                  >Event Deployment: 2 points</label
+                >
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  class="bbcode-checkbox"
+                  id="sfsDeployment"
+                  data-points="5"
+                /><label for="sfsDeployment">SFS Deployment: 5 points</label>
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  class="bbcode-checkbox"
+                  id="trainingFlight"
+                  data-points="6"
+                /><label for="trainingFlight"
+                  >Training Flight (Instructor): 6 points</label
+                >
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="content">
-            <div class="form">
-                <div class="checkbox-list">
-                    <ul>
-                        <li><input type="checkbox" class="bbcode-checkbox" id="pursuitDeployment" data-points="2"><label for="pursuitDeployment">Pursuit Deployment: 2 points</label></li>
-                        <li><input type="checkbox" class="bbcode-checkbox" id="otherDeployment" data-points="2"><label for="otherDeployment">Other Deployment: 2 points</label></li>
-                        <li><input type="checkbox" class="bbcode-checkbox" id="30MinPatrol" data-points="3"><label for="30MinPatrol">30+ Minute Patrol: 3 points</label></li>
-                        <li><input type="checkbox" class="bbcode-checkbox" id="60MinPatrol" data-points="4"><label for="60MinPatrol">60+ Minute Patrol: 4 points</label></li>
-                        <li><input type="checkbox" class="bbcode-checkbox" id="90MinPatrol" data-points="5"><label for="90MinPatrol">90+ Minute Patrol: 5 points</label></li>
-                        <li><input type="checkbox" class="bbcode-checkbox" id="eventDeployment" data-points="2"><label for="eventDeployment">Event Deployment: 2 points</label></li>
-                        <li><input type="checkbox" class="bbcode-checkbox" id="sfsDeployment" data-points="5"><label for="sfsDeployment">SFS Deployment: 5 points</label></li>
-                        <li><input type="checkbox" class="bbcode-checkbox" id="trainingFlight" data-points="6"><label for="trainingFlight">Training Flight (Instructor): 6 points</label></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="output">
-            <div class="bbcode-output">
-                <textarea id="bbcode-output" readonly></textarea>
-            </div>
-            <div class="button-container">
-                <button type="button" class="action-button" id="generate-button" onclick="generateBBCode()">Generate BBCode</button>
-            </div>
+      </div>
+      <div class="output">
+        <div class="bbcode-output">
+          <textarea id="bbcode-output" readonly></textarea>
         </div>
         <div class="button-container">
-            <button type="button" class="action-button" id="copy-button" onclick="copyToClipboard()">Copy BBCode</button>
-            <br>
-            <a href="https://lspd.gta.world/viewtopic.php?f=204&t=88507" target="_blank" class="external-link red-button">
-                <button type="button" class="action-button" id="personnel-files-button">Go to Personnel File</button>
-            </a>
+          <button
+            type="button"
+            class="action-button"
+            id="generate-button"
+            onclick="generateBBCode()"
+          >
+            Generate BBCode
+          </button>
         </div>
+      </div>
+      <div class="button-container">
+        <button
+          type="button"
+          class="action-button"
+          id="copy-button"
+          onclick="copyToClipboard()"
+        >
+          Copy BBCode
+        </button>
+        <br />
+        <a
+          href="https://lspd.gta.world/viewtopic.php?f=204&t=88507"
+          target="_blank"
+          class="external-link red-button"
+        >
+          <button
+            type="button"
+            class="action-button"
+            id="personnel-files-button"
+          >
+            Go to Personnel File
+          </button>
+        </a>
+      </div>
     </div>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
