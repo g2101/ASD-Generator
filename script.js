@@ -89,7 +89,7 @@ function savePersonnelFileLink() {
       const topicID = match[2];
      
       // https://lspd.gta.world/viewtopic.php?f=684&t=94290
-      
+
       // Set the expiration date to a very large value (e.g., 10 years from now)
       const expirationDate = new Date();
       expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
@@ -97,7 +97,7 @@ function savePersonnelFileLink() {
       
       // Update the link for "Go to Personnel File" button
       let personnelFilesLink = document.getElementById("personnel-files-link"); //! FIGURE OUT!!!!
-      personnelFilesLink.href = postingLink;
+      personnelFilesLink.href = document.cookie;
       
       // Hide the input section and show the rest of the page
       showSections();
