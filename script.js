@@ -88,9 +88,6 @@ function savePersonnelFileLink() {
       const forumID = match[1];
       const topicID = match[2];
       
-      // Construct the link in "posting" mode
-      const postingLink = `https://lspd.gta.world/posting.php?mode=reply&f=${forumID}&t=${topicID}`;
-      
       // Set the expiration date to a very large value (e.g., 10 years from now)
       const expirationDate = new Date();
       expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
