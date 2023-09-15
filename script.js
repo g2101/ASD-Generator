@@ -87,17 +87,18 @@ function savePersonnelFileLink() {
     if (match) {
       const forumID = match[1];
       const topicID = match[2];
-     
-      // https://lspd.gta.world/viewtopic.php?f=684&t=94290
-
+      
+      // Construct the link in "posting" mode
+      const postingLink = personnelFileLinkInput;
+      
       // Set the expiration date to a very large value (e.g., 10 years from now)
       const expirationDate = new Date();
       expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
-      document.cookie = `personnelFileLink=${personnelFileLinkInput}; expires=${expirationDate.toUTCString()}`;
+      document.cookie = `personnelFileLink=${postingLink}; expires=${expirationDate.toUTCString()}`;
       
       // Update the link for "Go to Personnel File" button
       let personnelFilesLink = document.getElementById("personnel-files-link"); //! FIGURE OUT!!!!
-      personnelFilesLink.href = document.cookie;
+      personnelFilesLink.href = postingLink;
       
       // Hide the input section and show the rest of the page
       showSections();
