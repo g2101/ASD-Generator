@@ -82,7 +82,7 @@ function savePersonnelFileLink() {
     expirationDate.setFullYear(expirationDate.getFullYear() + 10);
     document.cookie = `personnelFileLink=${encodedLink}; expires=${expirationDate.toUTCString()}`;
 
-    const personnelFilesLink = document.getElementById("personnel-files-link"); 
+    const personnelFilesLink = document.getElementById("link-input"); 
     personnelFilesLink.href = encodedLink;
 
     showSections();
