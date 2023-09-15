@@ -78,7 +78,7 @@ function getSavedPersonnelFileLink() {
 
 // Function to save the personnel file link to cookies (with "posting" mode)
 function savePersonnelFileLink() {
-  const personnelFileLinkInput = document.getElementById("personnel-file-link @input");
+  const personnelFileLinkInput = document.getElementById("personnel-file-link");
   const linkValue = personnelFileLinkInput.value.trim();
 
   if (linkValue !== "") {
