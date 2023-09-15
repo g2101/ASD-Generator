@@ -75,21 +75,30 @@ function savePersonnelFileLink() {
 }
 
 
+// Function to show/hide sections based on personnel file link existence
 function showSections() {
   const personnelFileSection = document.getElementById("personnel-file-section");
   const checkboxSection = document.getElementById("checkbox-section");
   const outputSection = document.getElementById("output-section");
+  const personnelFilesLink = document.getElementById("personnel-files-link");
 
   if (personnelFileLinkExists()) {
     personnelFileSection.style.display = "none";
     checkboxSection.style.display = "block";
     outputSection.style.display = "block";
+
+    // Update the link for "Go to Personnel File" button
+    personnelFilesLink.href = getSavedPersonnelFileLink();
   } else {
     personnelFileSection.style.display = "block";
     checkboxSection.style.display = "none";
     outputSection.style.display = "none";
+    
+    // Reset the link for "Go to Personnel File" button to default
+    personnelFilesLink.href = "#";
   }
 }
+
 
 showSections();
 
