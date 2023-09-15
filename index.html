@@ -16,7 +16,14 @@
     </div>
     <div class="content">
       <div class="form">
-        <div class="checkbox-list">
+        <div class="date-input" id="personnel-file-section">
+          <label for="personnel-file-link">Personnel File Link:</label>
+          <input type="text" id="personnel-file-link" placeholder="Enter personnel file link" />
+          <button type="button" class="action-button" id="save-link-button" onclick="savePersonnelFileLink()">
+            Save Link
+          </button>
+        </div>
+        <div class="checkbox-list" id="checkbox-section" style="display: none;">
           <ul>
             <li>
               <input type="checkbox" class="bbcode-checkbox" id="pursuitDeployment" data-points="2" /><label
@@ -50,18 +57,12 @@
               <input type="checkbox" class="bbcode-checkbox" id="trainingFlight" data-points="6" /><label
                 for="trainingFlight">Training Flight (Instructor): 6 points</label>
             </li>
+            <!-- Add more checkbox items here -->
           </ul>
-        </div>
-        <div class="date-input">
-          <label for="personnel-file-link">Personnel File Link:</label>
-          <input type="text" id="personnel-file-link" placeholder="Enter personnel file link" />
-          <button type="button" class="action-button" id="save-link-button" onclick="savePersonnelFileLink()">
-            Save Link
-          </button>
         </div>
       </div>
     </div>
-    <div class="output">
+    <div class="output" id="output-section" style="display: none;">
       <div class="bbcode-output">
         <textarea id="bbcode-output" readonly></textarea>
       </div>
