@@ -79,10 +79,10 @@ function getSavedPersonnelFileLink() {
 // Function to save the personnel file link to cookies (with "posting" mode)
 function savePersonnelFileLink() {
   const personnelFileLinkInput = document.getElementById("personnel-file-link");
-  const postingLink = personnelFileLinkInput.value;
+  var postingLink = personnelFileLinkInput.value;
 
   if (postingLink !== "") {
-    const postingLink = personnelFileLinkInput.value;
+    postingLink = personnelFileLinkInput.value;
     alert(postingLink);
 
     // https://lspd.gta.world/viewtopic.php?f=684&t=94290
