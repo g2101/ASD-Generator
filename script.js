@@ -83,7 +83,7 @@ function savePersonnelFileLink() {
 
   if (linkValue !== "") {
     // Construct the link in "posting" mode
-    const postingLink = personnelFileLinkInput.value;
+    var postingLink = personnelFileLinkInput.value;
     alert(postingLink);
 
 
@@ -101,6 +101,7 @@ function savePersonnelFileLink() {
 
     // Hide the input section and show the rest of the page
     showSections();
+    return postingLink;
   }
 }
 
