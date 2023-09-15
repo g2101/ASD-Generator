@@ -97,7 +97,7 @@ function savePersonnelFileLink() {
       document.cookie = `personnelFileLink=${postingLink}; expires=${expirationDate.toUTCString()}`;
       
       // Update the link for "Go to Personnel File" button
-      const personnelFilesLink = document.getElementById("personnel-files-link");
+      let personnelFilesLink = document.getElementById("personnel-files-link"); //! FIGURE OUT!!!!
       personnelFilesLink.href = postingLink;
       
       // Hide the input section and show the rest of the page
