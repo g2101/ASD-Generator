@@ -44,20 +44,30 @@ body {
   margin-right: 10px;
 }
 
-.date-input {
-  margin-bottom: 10px;
-  justify-content: center;
-  align-items: center
+.link-input {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
 }
 
-.date-input label {
+.link-input label {
   font-size: 18px; 
+  padding: 20px;
+  display: flex;
   justify-content: center;
   align-items: center
 }
 
-.date-input input {
-  font-size: 18px; /* Set the font size to match the checkboxes */
+.link-input input {
+  font-size: 18px; 
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center
 }
 
 .checkbox-list ul {
