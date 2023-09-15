@@ -20,6 +20,9 @@ function generateBBCode() {
     } else {
       bbcode += `[cb] [b]${text}[/b]\n`;
     }
+    const bbcodeOutput = document.getElementById("bbcode-output");
+    bbcodeOutput.select();
+    document.execCommand("copy");
   });
 
   bbcode += `[/list][/divbox2]`;
@@ -83,8 +86,7 @@ function savePersonnelFileLink() {
 
     const personnelFilesLink = document.getElementById("personnel-files-link"); 
     personnelFilesLink.href = encodedLink;
-    alert("success")
-    //showSections();
+    showSections();
   }
   else {
     alert("Please enter a link to your personnel file");
