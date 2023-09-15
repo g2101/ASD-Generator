@@ -126,7 +126,7 @@ function showSections() {
   const personnelFileSection = document.getElementById("personnel-file-section");
   const checkboxSection = document.getElementById("checkbox-section");
   const outputSection = document.getElementById("output-section");
-  const personnelFilesLink = document.getElementById("personnel-files-link");
+  let personnelFilesLink = document.getElementById("personnel-files-link");
 
   if (personnelFileLinkExists()) {
     personnelFileSection.style.display = "none";
