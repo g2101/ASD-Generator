@@ -46,10 +46,14 @@ body {
 
 .date-input {
   margin-bottom: 10px;
+  justify-content: center;
+  align-items: center
 }
 
 .date-input label {
-  font-size: 18px; /* Set the font size to match the checkboxes */
+  font-size: 18px; 
+  justify-content: center;
+  align-items: center
 }
 
 .date-input input {
