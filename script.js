@@ -17,7 +17,7 @@ function generateBBCode() {
 
     if (isChecked) {
       bbcode += `[cbc] [b]${text}[/b]\n`;
-      alert(text.substring(text.length()-))
+      alert(text.substring(text.length()-7))
     } else {
       bbcode += `[cb] [b]${text}[/b]\n`;
     }
