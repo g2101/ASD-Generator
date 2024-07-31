@@ -59,7 +59,7 @@ body {
   font-size: 18px;
 }
 
-.link-input-container input{
+.link-input-container input {
   padding: 10px;
 }
 
@@ -131,4 +131,15 @@ body {
 
 .external-link {
   text-decoration: none;
+}
+
+.totalPoints {
+  text-align: center;
+}
+
+.total-points-label {
+  font-size: 24px;
+  display: block;
+  margin-top: 10px;
+  text-align: center;
 }

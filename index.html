@@ -48,6 +48,10 @@
                 for="90MinPatrol">90+ Minute Patrol: 5 points</label>
             </li>
             <li>
+              <input type="checkbox" class="bbcode-checkbox" id="PartneredFlight" data-points="2" /><label
+                for="PartneredFlight">Partnered Flight: 2 points</label>
+            </li>
+            <li>
               <input type="checkbox" class="bbcode-checkbox" id="eventDeployment" data-points="2" /><label
                 for="eventDeployment">Event Deployment: 2 points</label>
             </li>
@@ -66,6 +70,7 @@
     <div class="output" id="output-section" style="display: none;">
       <div class="bbcode-output">
         <textarea id="bbcode-output" readonly></textarea>
+        <label id="totalPoints" class="total-points-label">Total Points: 0</label>
       </div>
       <div class="button-container">
         <button type="button" class="action-button" id="generate-button" onclick="generateBBCode()">

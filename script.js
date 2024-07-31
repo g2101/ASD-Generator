@@ -6,6 +6,7 @@ function generateBBCode() {
     .toUpperCase();
   const year = currentUTCDate.getUTCFullYear();
   const formattedDate = `${day}/${month}/${year}`;
+  var totalPoints = 0;
 
   const checkboxes = document.querySelectorAll(".bbcode-checkbox");
   let bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none][*][b]Date[/b]: ${formattedDate}\n[list=none]`;
@@ -14,9 +15,11 @@ function generateBBCode() {
     const label = checkbox.nextElementSibling;
     const text = label.textContent.trim();
     const isChecked = checkbox.checked;
+    const pointValue = parseInt(checkbox.getAttribute("data-points"), 10);
 
     if (isChecked) {
       bbcode += `[cbc] [b]${text}[/b]\n`;
+      totalPoints += pointValue;
     } else {
       bbcode += `[cb] [b]${text}[/b]\n`;
     }
@@ -26,6 +29,9 @@ function generateBBCode() {
 
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = bbcode;
+
+  const totalPointsOutput = document.getElementById("totalPoints");
+  totalPointsOutput.textContent = `Total Points: ${totalPoints}`;
 }
 
 function copyToClipboard() {
@@ -86,6 +92,9 @@ function clearInputs() {
 
   const bbcodeOutput = document.getElementById("bbcode-output");
   bbcodeOutput.value = "";
+
+  const totalPointsOutput = document.getElementById("totalPoints");
+  totalPointsOutput.textContent = `Total Points: 0`;
 }
 
 function showSections() {
