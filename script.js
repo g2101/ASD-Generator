@@ -94,14 +94,66 @@ window.onload = function () {
         }
     }
 
+    // Auto-fill instructor name if saved
+    const savedInstructor = getCookie('instructorName');
+    if (savedInstructor) {
+        const instructorInput = document.getElementById('instructor-name');
+        if (instructorInput) {
+            instructorInput.value = savedInstructor;
+        }
+    }
+
+    // Auto-fill tactical pilot if saved
+    const savedTacticalPilot = getCookie('tacticalPilot');
+    if (savedTacticalPilot) {
+        const tacticalPilotInput = document.getElementById('tactical-pilot');
+        if (tacticalPilotInput) {
+            tacticalPilotInput.value = savedTacticalPilot;
+        }
+    }
+
+    // Auto-fill OT officer name if saved
+    const savedOtOfficerName = getCookie('otOfficerName');
+    if (savedOtOfficerName) {
+        const otOfficerNameInput = document.getElementById('ot-officer-name');
+        if (otOfficerNameInput) {
+            otOfficerNameInput.value = savedOtOfficerName;
+        }
+    }
+
     // Add event listener to save routing number as it's typed
     const routingInput = document.getElementById('ot-routing');
     if (routingInput) {
         routingInput.addEventListener('input', function () {
             const value = this.value.trim();
-            if (value) {
-                setCookie('routingNumber', value, 9999);
-            }
+            setCookie('routingNumber', value, 9999);
+        });
+    }
+
+    // Add event listener to save instructor name as it's typed
+    const instructorInput = document.getElementById('instructor-name');
+    if (instructorInput) {
+        instructorInput.addEventListener('input', function () {
+            const value = this.value.trim();
+            setCookie('instructorName', value, 9999);
+        });
+    }
+
+    // Add event listener to save tactical pilot as it's typed
+    const tacticalPilotInput = document.getElementById('tactical-pilot');
+    if (tacticalPilotInput) {
+        tacticalPilotInput.addEventListener('input', function () {
+            const value = this.value.trim();
+            setCookie('tacticalPilot', value, 9999);
+        });
+    }
+
+    // Add event listener to save OT officer name as it's typed
+    const otOfficerNameInput = document.getElementById('ot-officer-name');
+    if (otOfficerNameInput) {
+        otOfficerNameInput.addEventListener('input', function () {
+            const value = this.value.trim();
+            setCookie('otOfficerName', value, 9999);
         });
     }
 
