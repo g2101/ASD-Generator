@@ -730,12 +730,21 @@
                         const dateDisplay = String(entryDate.getUTCDate()).padStart(2,'0') + '/' + months[entryDate.getUTCMonth()] + '/' + entryDate.getUTCFullYear();
                         const displayDT = formatDateAndTimeUTC(flight.timestamp);
                         const timeOnly = displayDT.split(' ').slice(1).join(' '); // "14:23 UTC"
-                        const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(1) : 'N/A';
+                        const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(1) : null;
                         const safeId = String(flight.id).replace(/'/g,"\\'");
                         const flightType = flight.type || 'ASTRO (Normal)'; // Default to normal if type not set
                         const points = typeof flight.points === 'number' ? flight.points : 0;
+                        // per-flight OT calculation: ASTRO = $3,000/hr, SFS = $6,000/hr
+                        const perHourRate = (flight.type && flight.type === 'SFS') ? 6000 : 3000;
+                        const otAmount = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? Math.round(flight.hours * perHourRate) : 0;
+                        // build parts and omit hours/OT if not provided
+                        const parts = [dateDisplay, flightType, timeOnly];
+                        if (hoursText !== null) parts.push(hoursText + 'h');
+                        parts.push(points + 'pts');
+                        if (otAmount > 0 && hoursText !== null) parts.push(formatMoney(otAmount));
+                        const line = parts.join(' - ');
                         html += `<div class="flight-entry" id="flight-${safeId}">
-                                    <div>${dateDisplay} - ${flightType} - ${timeOnly} - ${hoursText}h - ${points}pts</div>
+                                    <div>${line}</div>
                                     <div><button class="flight-remove-btn" onclick="removeFlight('${encodedMonth}','${safeId}')">✕</button></div>
                                 </div>`;
                     });
@@ -1051,12 +1060,21 @@ ${activitiesHTML}[/list][/divbox2]`;
                         const dateDisplay = String(entryDate.getUTCDate()).padStart(2,'0') + '/' + months[entryDate.getUTCMonth()] + '/' + entryDate.getUTCFullYear();
                         const displayDT = formatDateAndTimeUTC(flight.timestamp);
                         const timeOnly = displayDT.split(' ').slice(1).join(' '); // "14:23 UTC"
-                        const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(1) : 'N/A';
+                        const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(1) : null;
                         const safeId = String(flight.id).replace(/'/g,"\\'");
                         const flightType = flight.type || 'ASTRO (Normal)'; // Default to normal if type not set
                         const points = typeof flight.points === 'number' ? flight.points : 0;
+                        // per-flight OT calculation: ASTRO = $3,000/hr, SFS = $6,000/hr
+                        const perHourRate = (flight.type && flight.type === 'SFS') ? 6000 : 3000;
+                        const otAmount = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? Math.round(flight.hours * perHourRate) : 0;
+                        // build parts and omit hours/OT if not provided
+                        const parts = [dateDisplay, flightType, timeOnly];
+                        if (hoursText !== null) parts.push(hoursText + 'h');
+                        parts.push(points + 'pts');
+                        if (otAmount > 0 && hoursText !== null) parts.push(formatMoney(otAmount));
+                        const line = parts.join(' - ');
                         html += `<div class="flight-entry" id="ot-flight-${safeId}">
-                            <div>${dateDisplay} - ${flightType} - ${timeOnly} - ${hoursText}h - ${points}pts</div>
+                            <div>${line}</div>
                         </div>`;
                     });
                 } else {
