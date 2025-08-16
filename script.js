@@ -18,7 +18,7 @@ const pointActivities = [
 
 // cookie helpers
 function setCookie(name, value, days) {
-    const expires = new Date(Date.now() + days*24*60*60*1000).toUTCString();
+    const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
     document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires + "; path=/; SameSite=Lax";
 }
 function getCookie(name) {
@@ -34,7 +34,7 @@ function formatStat(label, hours, money) {
 
 // localStorage helpers
 function saveMonthlyHoursToStorage() {
-    try { localStorage.setItem('monthlyHours', JSON.stringify(monthlyHours)); } catch(e) { console.warn(e); }
+    try { localStorage.setItem('monthlyHours', JSON.stringify(monthlyHours)); } catch (e) { console.warn(e); }
     updateMonthlyHoursDisplay();
     updateOTMonthlyHoursDisplay();
 }
@@ -42,7 +42,7 @@ function loadMonthlyHoursFromStorage() {
     try {
         const raw = localStorage.getItem('monthlyHours');
         if (raw) monthlyHours = JSON.parse(raw);
-    } catch(e) { console.warn(e); }
+    } catch (e) { console.warn(e); }
     updateMonthlyHoursDisplay();
     updateOTMonthlyHoursDisplay();
 }
@@ -52,10 +52,10 @@ function loadCollapsedMonths() {
     try {
         const raw = localStorage.getItem('collapsedMonths');
         return raw ? JSON.parse(raw) : {};
-    } catch(e) { return {}; }
+    } catch (e) { return {}; }
 }
 function saveCollapsedMonths(obj) {
-    try { localStorage.setItem('collapsedMonths', JSON.stringify(obj)); } catch(e) { console.warn(e); }
+    try { localStorage.setItem('collapsedMonths', JSON.stringify(obj)); } catch (e) { console.warn(e); }
 }
 
 function openSFSReports() {
@@ -70,12 +70,12 @@ function openOvertimeForum() {
 }
 
 // page load
-window.onload = function() {
+window.onload = function () {
     loadSavedData();
     updateMonthlyHoursDisplay();
     updateFlightLogButton();
     updateRemoveOfficerBtn();
-    
+
     // Auto-fill personnel file link in OT request if saved
     const savedLink = getCookie('personnelFileLink');
     if (savedLink) {
@@ -97,7 +97,7 @@ window.onload = function() {
     // Add event listener to save routing number as it's typed
     const routingInput = document.getElementById('ot-routing');
     if (routingInput) {
-        routingInput.addEventListener('input', function() {
+        routingInput.addEventListener('input', function () {
             const value = this.value.trim();
             if (value) {
                 setCookie('routingNumber', value, 9999);
@@ -107,20 +107,20 @@ window.onload = function() {
 
     const deploymentSelect = document.getElementById('deployment-type');
     const customInput = document.getElementById('custom-deployment');
-    
+
     // Hide custom input by default
     if (customInput) {
         customInput.style.display = 'none';
     }
-    
+
     if (deploymentSelect) {
         // Initial check
         if (customInput && deploymentSelect.value === 'Custom') {
             customInput.style.display = 'block';
         }
-        
+
         // Change event listener
-        deploymentSelect.addEventListener('change', function() {
+        deploymentSelect.addEventListener('change', function () {
             if (customInput) {
                 customInput.style.display = this.value === 'Custom' ? 'block' : 'none';
                 if (this.value !== 'Custom') {
@@ -153,8 +153,8 @@ function updateFlightLogButton() {
 
     // Check for invalid combinations
     const hasPatrol = document.getElementById('patrol-90').checked ||
-                     document.getElementById('patrol-60').checked ||
-                     document.getElementById('patrol-30').checked;
+        document.getElementById('patrol-60').checked ||
+        document.getElementById('patrol-30').checked;
     let isValid = true;
 
     if (hasPatrol) {
@@ -174,7 +174,7 @@ function updateFlightLogButton() {
     }
 
     // Can only have one patrol type selected at a time
-    const patrolCount = ['patrol-90', 'patrol-60', 'patrol-30'].filter(id => 
+    const patrolCount = ['patrol-90', 'patrol-60', 'patrol-30'].filter(id =>
         document.getElementById(id)?.checked
     ).length;
     if (patrolCount > 1) {
@@ -214,17 +214,17 @@ function showPage(pageId) {
     // set the clicked nav button to active (works if triggered by a nav button)
     try {
         if (event && event.target && event.target.classList.contains('nav-btn')) event.target.classList.add('active');
-    } catch(e){}
+    } catch (e) { }
 }
 
 function setTodayDate() {
     const today = new Date();
-    const utcDate = new Date(today.getTime() + today.getTimezoneOffset()*60000);
+    const utcDate = new Date(today.getTime() + today.getTimezoneOffset() * 60000);
     document.getElementById('flight-date').value = utcDate.toISOString().split('T')[0];
     updateFlightLogButton();
 }
 function setSFSToday() {
-    const today = new Date(); const utcDate = new Date(today.getTime() + today.getTimezoneOffset()*60000);
+    const today = new Date(); const utcDate = new Date(today.getTime() + today.getTimezoneOffset() * 60000);
     document.getElementById('sfs-date').value = utcDate.toISOString().split('T')[0];
 }
 
@@ -274,7 +274,7 @@ function calculateFlightStats(flights) {
     let sfsHours = 0;
     let totalPoints = 0;
     let totalFlights = 0;
-    
+
     if (Array.isArray(flights)) {
         totalFlights = flights.length;
         flights.forEach(flight => {
@@ -290,12 +290,12 @@ function calculateFlightStats(flights) {
             }
         });
     }
-    
+
     const totalHours = astroHours + sfsHours;
     const astroOT = astroHours * 3000;
     const sfsOT = sfsHours * 6000;
     const totalOT = astroOT + sfsOT;
-    
+
     return {
         astroHours,
         sfsHours,
@@ -316,14 +316,14 @@ function formatMoney(amount) {
 function formatDateAndTimeUTC(isoString) {
     try {
         const d = new Date(isoString);
-        const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-        const day = String(d.getUTCDate()).padStart(2,'0');
+        const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        const day = String(d.getUTCDate()).padStart(2, '0');
         const mon = months[d.getUTCMonth()];
         const year = d.getUTCFullYear();
-        const hh = String(d.getUTCHours()).padStart(2,'0');
-        const mm = String(d.getUTCMinutes()).padStart(2,'0');
+        const hh = String(d.getUTCHours()).padStart(2, '0');
+        const mm = String(d.getUTCMinutes()).padStart(2, '0');
         return `${day}/${mon}/${year} ${hh}:${mm} UTC`;
-    } catch(e) { return isoString; }
+    } catch (e) { return isoString; }
 }
 
 // Sane UTC time normalizer for user-entered XX:XX strings.
@@ -370,12 +370,12 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
 
     // turn entries into [ [monthKey, data], ... ] and sort ascending by month/year
     const entries = Object.entries(monthlyHours);
-    entries.sort((a,b) => {
+    entries.sort((a, b) => {
         const toDate = (m) => {
             const parts = m.split(' ');
-            const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+            const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
             const mi = monthNames.indexOf(parts[0]);
-            const year = parseInt(parts[1],10) || 0;
+            const year = parseInt(parts[1], 10) || 0;
             return Date.UTC(year, mi, 1);
         };
         return toDate(a[0]) - toDate(b[0]); // ascending: older first
@@ -409,15 +409,15 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
 
         if (Array.isArray(data.flights) && data.flights.length > 0) {
             // sort flights by timestamp ascending (older first)
-            const flightsSorted = data.flights.slice().sort((x,y) => new Date(x.timestamp) - new Date(y.timestamp));
+            const flightsSorted = data.flights.slice().sort((x, y) => new Date(x.timestamp) - new Date(y.timestamp));
             flightsSorted.forEach(flight => {
                 const entryDate = new Date(flight.entryDate + 'T00:00:00Z');
-                const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-                const dateDisplay = String(entryDate.getUTCDate()).padStart(2,'0') + '/' + months[entryDate.getUTCMonth()] + '/' + entryDate.getUTCFullYear();
+                const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+                const dateDisplay = String(entryDate.getUTCDate()).padStart(2, '0') + '/' + months[entryDate.getUTCMonth()] + '/' + entryDate.getUTCFullYear();
                 const displayDT = formatDateAndTimeUTC(flight.timestamp);
                 const timeOnly = displayDT.split(' ').slice(1).join(' '); // "14:23 UTC"
                 const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(1) : null;
-                const safeId = String(flight.id).replace(/'/g,"\\'");
+                const safeId = String(flight.id).replace(/'/g, "\\'");
                 const flightType = flight.type || 'ASTRO (Normal)'; // Default to normal if type not set
                 const points = typeof flight.points === 'number' ? flight.points : 0;
                 // per-flight OT calculation: ASTRO = $3,000/hr, SFS = $6,000/hr
@@ -447,7 +447,7 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
 // toggle collapsed state per month & persist
 function toggleMonth(encodedMonthKey, prefix) {
     const monthKey = decodeURIComponent(encodedMonthKey);
-    
+
     // Find and update all matching sections (both in flight log and overtime request)
     const prefixes = ['flights-', 'ot-flights-'];
     prefixes.forEach(p => {
@@ -455,7 +455,7 @@ function toggleMonth(encodedMonthKey, prefix) {
         if (flightsEl) {
             const monthStat = flightsEl.closest('.month-stat');
             const caretIcon = monthStat?.querySelector('.caret');
-            
+
             if (flightsEl.classList.contains('collapsed')) {
                 flightsEl.classList.remove('collapsed');
                 caretIcon?.classList.remove('collapsed');
@@ -523,13 +523,13 @@ function generateFlightLog() {
 
     // Build month key (based off the entry date's month)
     const dateObj = new Date(date + 'T00:00:00Z');
-    const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     const monthKey = months[dateObj.getUTCMonth()] + ' ' + dateObj.getUTCFullYear();
 
     if (!monthlyHours[monthKey]) monthlyHours[monthKey] = { total: 0, flights: [] };
 
     // create flight id and timestamp (exact UTC time clicked)
-    const flightId = String(Date.now()) + '-' + Math.random().toString(36).slice(2,8);
+    const flightId = String(Date.now()) + '-' + Math.random().toString(36).slice(2, 8);
     const timestampUTC = new Date().toISOString();
     const hours = (hoursRaw && !isNaN(parseFloat(hoursRaw))) ? parseFloat(hoursRaw) : null;
 
@@ -577,14 +577,14 @@ function generateFlightLog() {
     // Check for logical restrictions
     function isPatrolSelected() {
         return document.getElementById('patrol-90').checked ||
-               document.getElementById('patrol-60').checked ||
-               document.getElementById('patrol-30').checked;
+            document.getElementById('patrol-60').checked ||
+            document.getElementById('patrol-30').checked;
     }
 
     // Validate activity selections based on rules
     const patrol = document.getElementById('patrol-90').checked ? 'patrol-90' :
-                  document.getElementById('patrol-60').checked ? 'patrol-60' :
-                  document.getElementById('patrol-30').checked ? 'patrol-30' : null;
+        document.getElementById('patrol-60').checked ? 'patrol-60' :
+            document.getElementById('patrol-30').checked ? 'patrol-30' : null;
 
     const hasPatrol = patrol !== null;
     const hasPursuit = document.getElementById('pursuit').checked;
@@ -601,7 +601,7 @@ function generateFlightLog() {
     }
 
     // Format date for BBCode (DD/MON/YYYY)
-    const formattedDate = String(dateObj.getUTCDate()).padStart(2,'0') + '/' + months[dateObj.getUTCMonth()] + '/' + dateObj.getUTCFullYear();
+    const formattedDate = String(dateObj.getUTCDate()).padStart(2, '0') + '/' + months[dateObj.getUTCMonth()] + '/' + dateObj.getUTCFullYear();
     // Show N/A when hours missing, ensure exactly one decimal place
     const hoursDisplay = (hours !== null && !isNaN(hours)) ? Number(hours.toFixed(1)) : 'N/A';
 
@@ -658,12 +658,12 @@ function removeFlight(encodedMonthKey, flightId) {
     const idx = flights.findIndex(f => String(f.id) === String(flightId));
     if (idx === -1) return;
     flights.splice(idx, 1)[0];
-    
+
     // If this was the last flight in the month, remove the entire month
     if (flights.length === 0) {
         delete monthlyHours[monthKey];
     }
-    
+
     saveMonthlyHoursToStorage();
     updateMonthlyHoursDisplay();
 }
@@ -685,8 +685,8 @@ function generateSFSReport() {
     if (!date) { alert('Please select a date for the SFS deployment report'); return; }
 
     const dateObj = new Date(date + 'T00:00:00Z');
-    const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-    const formattedDate = String(dateObj.getUTCDate()).padStart(2,'0') + '/' + months[dateObj.getUTCMonth()] + '/' + dateObj.getUTCFullYear();
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    const formattedDate = String(dateObj.getUTCDate()).padStart(2, '0') + '/' + months[dateObj.getUTCMonth()] + '/' + dateObj.getUTCFullYear();
 
     // Normalize times to display with UTC explicitly
     const timeStarted = normalizeToUTCTime(timeStartedRaw); // e.g. "14:05 UTC" or "input UTC"
@@ -696,7 +696,7 @@ function generateSFSReport() {
     const officerInputs = document.querySelectorAll('#flight-officers input[type="text"]');
     let officersHTML = '';
     let hasOfficers = false;
-    officerInputs.forEach(input => { 
+    officerInputs.forEach(input => {
         if (input.value.trim()) {
             officersHTML += `[*] ${input.value.trim()}\n`;
             hasOfficers = true;
@@ -797,16 +797,16 @@ function generateOvertimeRequest() {
 
 function copyToClipboard(elementId) {
     const textarea = document.getElementById(elementId);
-    if (!textarea || textarea.value.trim() === '') { 
-        alert('Please generate the form first!'); 
-        return; 
+    if (!textarea || textarea.value.trim() === '') {
+        alert('Please generate the form first!');
+        return;
     }
-    textarea.select(); 
+    textarea.select();
     textarea.setSelectionRange(0, 99999);
-    try { 
+    try {
         document.execCommand('copy');
-    } catch(e) { 
-        alert('Failed to copy. Please select and copy manually.'); 
+    } catch (e) {
+        alert('Failed to copy. Please select and copy manually.');
     }
 }
 
@@ -836,12 +836,12 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
     }
 
     const entries = Object.entries(monthlyHours);
-    entries.sort((a,b) => {
+    entries.sort((a, b) => {
         const toDate = (m) => {
             const parts = m.split(' ');
-            const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+            const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
             const mi = monthNames.indexOf(parts[0]);
-            const year = parseInt(parts[1],10) || 0;
+            const year = parseInt(parts[1], 10) || 0;
             return Date.UTC(year, mi, 1);
         };
         return toDate(a[0]) - toDate(b[0]);
@@ -877,42 +877,42 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
                     ${stats.totalOT > 0 ? '<div><strong>Total OT:</strong> ' + formatMoney(stats.totalOT) + '</div>' : ''}
                 </div>`;
 
-                if (Array.isArray(data.flights) && data.flights.length > 0) {
-                    // sort flights by timestamp ascending (older first)
-                    const flightsSorted = data.flights.slice().sort((x,y) => new Date(x.timestamp) - new Date(y.timestamp));
-                    flightsSorted.forEach(flight => {
-                        const entryDate = new Date(flight.entryDate + 'T00:00:00Z');
-                        const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-                        const dateDisplay = String(entryDate.getUTCDate()).padStart(2,'0') + '/' + months[entryDate.getUTCMonth()] + '/' + entryDate.getUTCFullYear();
-                        const displayDT = formatDateAndTimeUTC(flight.timestamp);
-                        const timeOnly = displayDT.split(' ').slice(1).join(' '); // "14:23 UTC"
-                        const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(1) : null;
-                        const safeId = String(flight.id).replace(/'/g,"\\'");
-                        const flightType = flight.type || 'ASTRO (Normal)'; // Default to normal if type not set
-                        const points = typeof flight.points === 'number' ? flight.points : 0;
-                        // per-flight OT calculation: ASTRO = $3,000/hr, SFS = $6,000/hr
-                        const perHourRate = (flight.type && flight.type === 'SFS') ? 6000 : 3000;
-                        const otAmount = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? Math.round(flight.hours * perHourRate) : 0;
-                        // build parts and omit hours/OT if not provided
-                        const parts = [dateDisplay, flightType, timeOnly];
-                        if (hoursText !== null) parts.push(hoursText + 'h');
-                        parts.push(points + 'pts');
-                        if (otAmount > 0 && hoursText !== null) parts.push(formatMoney(otAmount));
-                        const line = parts.join(' - ');
-                        html += `<div class="flight-entry" id="ot-flight-${safeId}">
+        if (Array.isArray(data.flights) && data.flights.length > 0) {
+            // sort flights by timestamp ascending (older first)
+            const flightsSorted = data.flights.slice().sort((x, y) => new Date(x.timestamp) - new Date(y.timestamp));
+            flightsSorted.forEach(flight => {
+                const entryDate = new Date(flight.entryDate + 'T00:00:00Z');
+                const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+                const dateDisplay = String(entryDate.getUTCDate()).padStart(2, '0') + '/' + months[entryDate.getUTCMonth()] + '/' + entryDate.getUTCFullYear();
+                const displayDT = formatDateAndTimeUTC(flight.timestamp);
+                const timeOnly = displayDT.split(' ').slice(1).join(' '); // "14:23 UTC"
+                const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(1) : null;
+                const safeId = String(flight.id).replace(/'/g, "\\'");
+                const flightType = flight.type || 'ASTRO (Normal)'; // Default to normal if type not set
+                const points = typeof flight.points === 'number' ? flight.points : 0;
+                // per-flight OT calculation: ASTRO = $3,000/hr, SFS = $6,000/hr
+                const perHourRate = (flight.type && flight.type === 'SFS') ? 6000 : 3000;
+                const otAmount = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? Math.round(flight.hours * perHourRate) : 0;
+                // build parts and omit hours/OT if not provided
+                const parts = [dateDisplay, flightType, timeOnly];
+                if (hoursText !== null) parts.push(hoursText + 'h');
+                parts.push(points + 'pts');
+                if (otAmount > 0 && hoursText !== null) parts.push(formatMoney(otAmount));
+                const line = parts.join(' - ');
+                html += `<div class="flight-entry" id="ot-flight-${safeId}">
                             <div>${line}</div>
                             <div><button class="flight-remove-btn" onclick="removeFlight('${encodedMonth}','${safeId}')">✕</button></div>
                         </div>`;
-                    });
-                } else {
-                    html += `<div class="flight-entry"><div>No flights</div></div>`;
-                }
-
-                html += `</div></div>`;
             });
-
-            display.innerHTML = html;
+        } else {
+            html += `<div class="flight-entry"><div>No flights</div></div>`;
         }
+
+        html += `</div></div>`;
+    });
+
+    display.innerHTML = html;
+}
 
 function addAutoFillButtons() {
     // Get both display elements
@@ -952,18 +952,18 @@ function autoFillOvertimeRequest(monthKey, data) {
     if (savedLink) {
         document.getElementById('ot-flightlog-link').value = savedLink;
     }
-    
+
     // Auto-fill the routing number if saved
     const savedRouting = getCookie('routingNumber');
     if (savedRouting) {
         document.getElementById('ot-routing').value = savedRouting;
     }
-    
+
     // Auto-fill hours and amount
     document.getElementById('ot-regular-hours').value = stats.astroHours.toFixed(1);
     document.getElementById('ot-sfs-hours').value = stats.sfsHours.toFixed(1);
     document.getElementById('ot-amount').value = formatMoney(stats.totalOT);
-    
+
     // Format month as "MMM/YYYY"
     const parts = monthKey.split(' ');
     if (parts.length === 2) {
@@ -983,8 +983,8 @@ function autoFillOvertimeRequest(monthKey, data) {
 }
 
 // Call this function after the monthly hours display is updated
-updateMonthlyHoursDisplay = (function(original) {
-    return function() {
+updateMonthlyHoursDisplay = (function (original) {
+    return function () {
         original();
         addAutoFillButtons();
     };
