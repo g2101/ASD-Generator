@@ -13,7 +13,7 @@ function generateBBCode() {
   }
 
   const checkboxes = document.querySelectorAll(".bbcode-checkbox");
-  let bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none][*][b]Date[/b]: ${formattedDate}\n[*][b]Total Flight Hours (Optional)[/b]: ${totalHours} [/list][list=none]`;
+  let bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none][*][b]Date[/b]: ${formattedDate}\n[*][b]Total Flight Hours (Optional)[/b]: ${totalHours} [/list][list=none]\n`;
 
   checkboxes.forEach((checkbox) => {
     const label = checkbox.nextElementSibling;
