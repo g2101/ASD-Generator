@@ -75,6 +75,35 @@ window.onload = function() {
     updateMonthlyHoursDisplay();
     updateFlightLogButton();
     updateRemoveOfficerBtn();
+    
+    // Auto-fill personnel file link in OT request if saved
+    const savedLink = getCookie('personnelFileLink');
+    if (savedLink) {
+        const otFlightLogLink = document.getElementById('ot-flightlog-link');
+        if (otFlightLogLink) {
+            otFlightLogLink.value = savedLink;
+        }
+    }
+
+    // Auto-fill routing number if saved
+    const savedRouting = getCookie('routingNumber');
+    if (savedRouting) {
+        const routingInput = document.getElementById('ot-routing');
+        if (routingInput) {
+            routingInput.value = savedRouting;
+        }
+    }
+
+    // Add event listener to save routing number as it's typed
+    const routingInput = document.getElementById('ot-routing');
+    if (routingInput) {
+        routingInput.addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value) {
+                setCookie('routingNumber', value, 9999);
+            }
+        });
+    }
 
     const deploymentSelect = document.getElementById('deployment-type');
     if (deploymentSelect) {
@@ -584,9 +613,17 @@ function generateOvertimeRequest() {
 
 function copyToClipboard(elementId) {
     const textarea = document.getElementById(elementId);
-    if (!textarea || textarea.value.trim() === '') { alert('Please generate the form first!'); return; }
-    textarea.select(); textarea.setSelectionRange(0, 99999);
-    try { document.execCommand('copy'); alert('Copied to clipboard!'); } catch(e) { alert('Failed to copy. Please select and copy manually.'); }
+    if (!textarea || textarea.value.trim() === '') { 
+        alert('Please generate the form first!'); 
+        return; 
+    }
+    textarea.select(); 
+    textarea.setSelectionRange(0, 99999);
+    try { 
+        document.execCommand('copy');
+    } catch(e) { 
+        alert('Failed to copy. Please select and copy manually.'); 
+    }
 }
 
 function updateMonthlyHoursDisplay() {
@@ -600,6 +637,8 @@ function updateOTMonthlyHoursDisplay() {
     const display = document.getElementById('ot-monthly-hours-display');
     if (display) {
         updateMonthlyHoursDisplayForElement(display, 'ot-flights-');
+        // Add auto-fill buttons after updating the display
+        addAutoFillButtons();
     }
 }
 
@@ -688,3 +727,75 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
 
             display.innerHTML = html;
         }
+
+function addAutoFillButtons() {
+    // Get both display elements
+    const displays = [
+        document.getElementById('monthly-hours-display'),
+        document.getElementById('ot-monthly-hours-display')
+    ].filter(Boolean); // Remove null/undefined values
+
+    if (displays.length === 0) return;
+
+    const entries = Object.entries(monthlyHours);
+    entries.forEach(([monthKey, data]) => {
+        const encodedMonth = encodeURIComponent(monthKey);
+        // Find all matching month stats across both displays
+        const monthStats = document.querySelectorAll(`[data-month="${monthKey}"]`);
+        monthStats.forEach(monthStat => {
+            // Check if button already exists to avoid duplicates
+            if (!monthStat.querySelector('.btn-secondary')) {
+                const button = document.createElement('button');
+                button.textContent = 'Auto-Fill OT Request';
+                button.className = 'btn btn-secondary';
+                button.onclick = () => autoFillOvertimeRequest(monthKey, data);
+                monthStat.appendChild(button);
+            }
+        });
+    });
+}
+
+function autoFillOvertimeRequest(monthKey, data) {
+    const stats = calculateFlightStats(data.flights);
+    // Auto-fill the personnel file link if saved
+    const savedLink = getCookie('personnelFileLink');
+    if (savedLink) {
+        document.getElementById('ot-flightlog-link').value = savedLink;
+    }
+    
+    // Auto-fill the routing number if saved
+    const savedRouting = getCookie('routingNumber');
+    if (savedRouting) {
+        document.getElementById('ot-routing').value = savedRouting;
+    }
+    
+    // Auto-fill hours and amount
+    document.getElementById('ot-regular-hours').value = stats.astroHours.toFixed(1);
+    document.getElementById('ot-sfs-hours').value = stats.sfsHours.toFixed(1);
+    document.getElementById('ot-amount').value = formatMoney(stats.totalOT);
+    
+    // Format month as "MMM/YYYY"
+    const parts = monthKey.split(' ');
+    if (parts.length === 2) {
+        document.getElementById('ot-month').value = parts[0] + '/' + parts[1]; // e.g., "AUG/2025"
+    }
+
+    // Switch to the overtime request tab
+    showPage('overtime-request');
+    // Also update the active state of the nav button
+    const navBtns = document.querySelectorAll('.nav-btn');
+    navBtns.forEach(b => {
+        b.classList.remove('active');
+        if (b.getAttribute('onclick') === "showPage('overtime-request')") {
+            b.classList.add('active');
+        }
+    });
+}
+
+// Call this function after the monthly hours display is updated
+updateMonthlyHoursDisplay = (function(original) {
+    return function() {
+        original();
+        addAutoFillButtons();
+    };
+})(updateMonthlyHoursDisplay);

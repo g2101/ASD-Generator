@@ -182,3 +182,51 @@ body {
 .form-group #ot-flightlog-link + .btn {
     margin-top: 12px;
 }
+
+/* Personnel Setup Styles */
+.personnel-setup {
+    background: rgba(255, 0, 0, 0.1);
+    border: 2px solid rgba(255, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.personnel-setup h3 {
+    color: #ff6b6b;
+    margin-bottom: 10px;
+}
+
+.setup-notice {
+    color: #ff8585;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+}
+
+.personnel-input-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.personnel-input-group input[type="url"] {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid rgba(255, 0, 0, 0.3);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.personnel-input-group input[type="url"]:focus {
+    border-color: rgba(255, 0, 0, 0.5);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1);
+}
+
+.personnel-input-group .btn {
+    white-space: nowrap;
+    padding: 12px 24px;
+}

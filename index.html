@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>ASD Patrol Log Generator</title>
-    <link rel="icon" href="TctKg6h.png" />
+    <link rel="icon" href="./TctKg6h.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,6 +20,15 @@
         <!-- Flight Log Page -->
         <div id="flight-log" class="page active">
             <h2>Flight Log Entry</h2>
+
+            <div class="personnel-setup" id="personnel-section">
+                <h3>Personnel File Setup</h3>
+                <p class="setup-notice">Please save your personnel file link before continuing</p>
+                <div class="personnel-input-group">
+                    <input type="url" id="personnel-file" placeholder="Paste the link to your personnel file">
+                    <button class="btn" onclick="savePersonnelFile()">Save Personnel File</button>
+                </div>
+            </div>
 
             <div class="stats" id="flight-stats">
                 <h3>Monthly Flight Hours</h3>
@@ -60,15 +69,6 @@
             <button class="btn btn-secondary" onclick="openPersonnelFile()">Personnel File</button>
 
             <br><br>
-
-            <div class="profile-section" id="personnel-section">
-                <div class="form-group">
-                    <label for="personnel-file">Personnel File Link:</label>
-                    <div class="file-input-group">
-                        <input type="url" id="personnel-file" placeholder="Paste the link to your personnel file."><button class="btn btn-secondary btn-small" onclick="savePersonnelFile()">Save</button>
-                    </div>
-                </div>
-            </div>
 
             <div class="output">
                 <textarea id="flight-output" readonly placeholder="Generated BBCode will appear here..."></textarea>
@@ -166,8 +166,8 @@
             </div>
 
             <div class="form-group">
-                <label for="ot-flightlog-link">Link to monthly flight log (full URL):</label>
-                <input type="url" id="ot-flightlog-link" placeholder="Copy the link of the monthly post that you replied to your personnel file with.">
+                <label for="ot-flightlog-link">Personnel File Link:</label>
+                <input type="url" id="ot-flightlog-link" placeholder="The link to your main personnel file.">
                 <button class="btn btn-secondary" onclick="openPersonnelFile()">Personnel File</button>
             </div>
 
