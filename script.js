@@ -106,10 +106,27 @@ window.onload = function() {
     }
 
     const deploymentSelect = document.getElementById('deployment-type');
+    const customInput = document.getElementById('custom-deployment');
+    
+    // Hide custom input by default
+    if (customInput) {
+        customInput.style.display = 'none';
+    }
+    
     if (deploymentSelect) {
+        // Initial check
+        if (customInput && deploymentSelect.value === 'Custom') {
+            customInput.style.display = 'block';
+        }
+        
+        // Change event listener
         deploymentSelect.addEventListener('change', function() {
-            const customInput = document.getElementById('custom-deployment');
-            if (customInput) customInput.style.display = this.value === 'Custom' ? 'block' : 'none';
+            if (customInput) {
+                customInput.style.display = this.value === 'Custom' ? 'block' : 'none';
+                if (this.value !== 'Custom') {
+                    customInput.value = ''; // Clear the input when hidden
+                }
+            }
         });
     }
 
@@ -134,8 +151,49 @@ function updateFlightLogButton() {
     const checkboxes = document.querySelectorAll('.checkbox-item input[type="checkbox"]:checked');
     const button = document.getElementById('generate-flight-btn');
 
-    // keep the same .btn sizing — only toggle .disabled which changes color and glow
-    if (date && checkboxes.length > 0) {
+    // Check for invalid combinations
+    const hasPatrol = document.getElementById('patrol-90').checked ||
+                     document.getElementById('patrol-60').checked ||
+                     document.getElementById('patrol-30').checked;
+    let isValid = true;
+
+    if (hasPatrol) {
+        // While on patrol, can't do: pursuit, other deployment, event deployment, or instruction
+        const incompatibleWithPatrol = [
+            'pursuit',
+            'other-deployment',
+            'event-deployment',
+            'training-instructor'
+        ];
+
+        incompatibleWithPatrol.forEach(id => {
+            if (document.getElementById(id)?.checked) {
+                isValid = false;
+            }
+        });
+    }
+
+    // Can only have one patrol type selected at a time
+    const patrolCount = ['patrol-90', 'patrol-60', 'patrol-30'].filter(id => 
+        document.getElementById(id)?.checked
+    ).length;
+    if (patrolCount > 1) {
+        isValid = false;
+    }
+
+    // Can only have one each of other deployment and event deployment
+    ['other-deployment', 'event-deployment'].forEach(id => {
+        const checkbox = document.getElementById(id);
+        if (checkbox?.checked) {
+            // Check for incompatible combinations
+            if (hasPatrol) {
+                isValid = false;
+            }
+        }
+    });
+
+    // Enable button only if date selected, at least one checkbox checked, and combinations are valid
+    if (date && checkboxes.length > 0 && isValid) {
         button.classList.remove('disabled');
         button.disabled = false;
     } else {
@@ -389,19 +447,33 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
 // toggle collapsed state per month & persist
 function toggleMonth(encodedMonthKey, prefix) {
     const monthKey = decodeURIComponent(encodedMonthKey);
-    const flightsEl = document.getElementById(prefix + encodedMonthKey);
-    if (!flightsEl) return;
+    
+    // Find and update all matching sections (both in flight log and overtime request)
+    const prefixes = ['flights-', 'ot-flights-'];
+    prefixes.forEach(p => {
+        const flightsEl = document.getElementById(p + encodedMonthKey);
+        if (flightsEl) {
+            const monthStat = flightsEl.closest('.month-stat');
+            const caretIcon = monthStat?.querySelector('.caret');
+            
+            if (flightsEl.classList.contains('collapsed')) {
+                flightsEl.classList.remove('collapsed');
+                caretIcon?.classList.remove('collapsed');
+            } else {
+                flightsEl.classList.add('collapsed');
+                caretIcon?.classList.add('collapsed');
+            }
+        }
+    });
+
+    // Update collapsed state in storage
     const collapsed = loadCollapsedMonths();
-    const isNowCollapsed = flightsEl.style.display === 'none' || flightsEl.style.display === '';
-    if (isNowCollapsed) {
-        flightsEl.style.display = 'block';
+    if (collapsed[monthKey]) {
         delete collapsed[monthKey];
     } else {
-        flightsEl.style.display = 'none';
         collapsed[monthKey] = true;
     }
     saveCollapsedMonths(collapsed);
-    updateMonthlyHoursDisplay();
 }
 
 // Add officer: create a simple crew-member entry (no per-entry remove button)
@@ -502,18 +574,67 @@ function generateFlightLog() {
 
     saveMonthlyHoursToStorage();
 
-    // build BBCode using pointActivities
-    let activitiesHTML = '';
-    pointActivities.forEach(a => {
-        const cb = document.getElementById(a.id);
-        activitiesHTML += (cb && cb.checked ? '[cbc] ' : '[cb] ') + '[b]' + a.id.replace('-', ' ').replace(/([A-Z])/g, ' $1').toLowerCase() + ': ' + a.points + ' points[/b]\n';
-    });
+    // Check for logical restrictions
+    function isPatrolSelected() {
+        return document.getElementById('patrol-90').checked ||
+               document.getElementById('patrol-60').checked ||
+               document.getElementById('patrol-30').checked;
+    }
+
+    // Validate activity selections based on rules
+    const patrol = document.getElementById('patrol-90').checked ? 'patrol-90' :
+                  document.getElementById('patrol-60').checked ? 'patrol-60' :
+                  document.getElementById('patrol-30').checked ? 'patrol-30' : null;
+
+    const hasPatrol = patrol !== null;
+    const hasPursuit = document.getElementById('pursuit').checked;
+    const hasOtherDeployment = document.getElementById('other-deployment').checked;
+    const hasSFSDeployment = document.getElementById('sfs-deployment').checked;
+    const hasEventDeployment = document.getElementById('event-deployment').checked;
+    const hasPartneredFlight = document.getElementById('partnered-flight').checked;
+    const hasTrainingInstructor = document.getElementById('training-instructor').checked;
+
+    // Validate selections
+    if (hasPatrol && (hasOtherDeployment || hasEventDeployment || hasTrainingInstructor)) {
+        alert('Cannot log other deployments, event deployments, or instruction flights while on patrol');
+        return;
+    }
 
     // Format date for BBCode (DD/MON/YYYY)
     const formattedDate = String(dateObj.getUTCDate()).padStart(2,'0') + '/' + months[dateObj.getUTCMonth()] + '/' + dateObj.getUTCFullYear();
-    // revert to original BBCode output (show N/A when hours missing)
-    const hoursDisplay = (hours !== null && !isNaN(hours)) ? Number(hours).toFixed(1) : 'N/A';
-    const bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]\n[hr][/hr]\n[list=none][*][b]Date[/b]: ${formattedDate}\n[*][b]Total Flight Hours (Optional)[/b]: ${hoursDisplay} [/list][list=none]\n${activitiesHTML}[/list][/divbox2]`;
+    // Show N/A when hours missing, ensure exactly one decimal place
+    const hoursDisplay = (hours !== null && !isNaN(hours)) ? Number(hours.toFixed(1)) : 'N/A';
+
+    // Define the correct order of activities and their display names
+    const orderedActivities = [
+        { id: 'pursuit', name: 'Pursuit Deployment' },
+        { id: 'other-deployment', name: 'Other Deployment' },
+        { id: 'patrol-30', name: '30+ Minute Patrol' },
+        { id: 'patrol-60', name: '60+ Minute Patrol' },
+        { id: 'patrol-90', name: '90+ Minute Patrol' },
+        { id: 'event-deployment', name: 'Event Deployment' },
+        { id: 'sfs-deployment', name: 'SFS Deployment' },
+        { id: 'partnered-flight', name: 'Partnered Flight' },
+        { id: 'training-instructor', name: 'Training Flight (Instructor)' }
+    ];
+
+    let activitiesHTML = '';
+    orderedActivities.forEach(activity => {
+        const checkbox = document.getElementById(activity.id);
+        if (checkbox) {
+            const points = pointActivities.find(p => p.id === activity.id)?.points || 0;
+            activitiesHTML += `${checkbox.checked ? '[cbc]' : '[cb]'} [b]${activity.name}[/b]: ${points} points\n`;
+        }
+    });
+
+    const bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]
+[hr][/hr]
+
+[list=none][*][b]Date[/b]: ${formattedDate}
+[*][b]Total Flight Hours (Optional)[/b]: ${hoursDisplay} [/list]
+
+[list=none]
+${activitiesHTML}[/list][/divbox2]`;
 
     document.getElementById('flight-output').value = bbcode;
 
@@ -537,6 +658,12 @@ function removeFlight(encodedMonthKey, flightId) {
     const idx = flights.findIndex(f => String(f.id) === String(flightId));
     if (idx === -1) return;
     flights.splice(idx, 1)[0];
+    
+    // If this was the last flight in the month, remove the entire month
+    if (flights.length === 0) {
+        delete monthlyHours[monthKey];
+    }
+    
     saveMonthlyHoursToStorage();
     updateMonthlyHoursDisplay();
 }
@@ -568,11 +695,68 @@ function generateSFSReport() {
     // collect officers (each crew-member input)
     const officerInputs = document.querySelectorAll('#flight-officers input[type="text"]');
     let officersHTML = '';
-    officerInputs.forEach(input => { if (input.value.trim()) officersHTML += `[*] ${input.value.trim()}\n`; });
+    let hasOfficers = false;
+    officerInputs.forEach(input => { 
+        if (input.value.trim()) {
+            officersHTML += `[*] ${input.value.trim()}\n`;
+            hasOfficers = true;
+        }
+    });
 
     const finalDeploymentType = deploymentType === 'Custom' ? customDeployment : deploymentType;
 
-    const bbcode = `[divbox2=white][center][asdlogo=200][color=transparent][size=40]asdbestsd[/size][/color][lspdlogo=200][color=transparent][size=40]asdbestsd[/size][/color][sfslogo=200] [size=150][b]LOS SANTOS POLICE DEPARTMENT[/b][/size] [size=115][b]Air Support Division[/b][/size] [i]The mission is the same, only the vehicle has changed.[/i] [hr][/hr][size=125]Special Flights Section Deployment Report[/size][hr][/hr] [justify][b][size=150]Section I[/size][/b] [hr][/hr] [u]1.1[/u] [b]Tactical Pilot: [/b][list] [*] ${tacticalPilot || 'DIVISION RANK FIRSTNAME LASTNAME'} [/list] [u]1.2[/u] [b]Tactical Flight Officers: [/b][list] ${officersHTML || '[*] DIVISION RANK FIRSTNAME LASTNAME\n[*] DIVISION RANK FIRSTNAME LASTNAME\n'}[/list] [u]1.3[/u] [b]Type of Deployment: [/b] ${finalDeploymentType || 'Event/TFS/SFS Operation/VIP Transport/HRAW Assistance/DB Sting OP/Etc.'} [b][size=150]Section II[/size][/b] [hr][/hr] [u]2.1[/u] [b]Date: [/b] ${formattedDate} [u]2.2[/u] [b]Time Started: [/b] ${timeStarted || '00:00 UTC'} [u]2.3[/u] [b]Time Ended: [/b] ${timeEnded || '00:00 UTC'} [b][size=150]Section III[/size][/b] [hr][/hr] (In case of classified DB Sting OP, only use section 3.3) [u]3.1[/u] [b]Short detailed narrative:[/b] [indent=25]${narrative || 'NARRATIVE'}[/indent] [u]3.2[/u] [b]Additional notes: [/b] [indent=25]${additionalNotes || 'NOTES'}[/indent] [ooc][u]3.2.1[/u] [b]Additional OOC notes: [/b] ${oocNotes || 'NOTES'} [/ooc] [u]3.3[/u] [b]Case File: [/b] [indent=25]${caseFile || 'CASEFILENUMBER'}[/indent] [b]Signature:[/b] ${signature || 'SIGNHERE'} [/justify][/divbox2]`;
+    // Only include flight officers section if there are officers
+    const flightOfficersSection = hasOfficers ? `[u]1.2[/u] [b]Tactical Flight Officers: [/b][list]
+${officersHTML}[/list]
+
+` : '';
+
+    const bbcode = `[divbox2=white][center][asdlogo=200][color=transparent][size=40]asdbestsd[/size][/color][lspdlogo=200][color=transparent][size=40]asdbestsd[/size][/color][sfslogo=200]
+
+[size=150][b]LOS SANTOS POLICE DEPARTMENT[/b][/size]
+[size=115][b]Air Support Division[/b][/size]
+[i]The mission is the same, only the vehicle has changed.[/i]
+[hr][/hr][size=125]Special Flights Section Deployment Report[/size][hr][/hr]
+
+
+[justify][b][size=150]Section I[/size][/b]
+[hr][/hr]
+
+[u]1.1[/u] [b]Tactical Pilot: [/b][list]
+[*] ${tacticalPilot || 'DIVISION RANK FIRSTNAME LASTNAME'}
+[/list]
+${flightOfficersSection}
+
+
+[u]1.3[/u] [b]Type of Deployment: [/b] ${finalDeploymentType || 'Event/TFS/SFS Operation/VIP Transport/HRAW Assistance/DB Sting OP/Etc.'}
+
+
+[b][size=150]Section II[/size][/b]
+[hr][/hr]
+[u]2.1[/u] [b]Date: [/b] ${formattedDate}
+[u]2.2[/u] [b]Time Started: [/b] ${timeStarted || '00:00 UTC'}
+[u]2.3[/u] [b]Time Ended: [/b] ${timeEnded || '00:00 UTC'}
+
+
+
+[b][size=150]Section III[/size][/b]
+[hr][/hr]
+(In case of classified DB Sting OP, only use section 3.3)
+
+[u]3.1[/u] [b]Short detailed narrative:[/b]
+[indent=25]${narrative || 'NARRATIVE'}[/indent]
+
+
+[u]3.2[/u] [b]Additional notes: [/b] [indent=25]${additionalNotes || 'NOTES'}[/indent]
+[ooc][u]3.2.1[/u] [b]Additional OOC notes: [/b] ${oocNotes || 'NOTES'} [/ooc]
+
+
+[u]3.3[/u] [b]Case File: [/b] [indent=25]${caseFile || 'CASEFILENUMBER'}[/indent]
+
+
+
+[b]Signature:[/b] ${signature || 'SIGNHERE'}
+[/justify][/divbox2]`;
 
     document.getElementById('sfs-output').value = bbcode;
 }
@@ -669,7 +853,9 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
         const totalDisplay = stats.totalHours.toFixed(1);
         const encodedMonth = encodeURIComponent(monthKey);
         const isCollapsed = !!collapsed[monthKey];
-        const caretClass = isCollapsed ? 'caret collapsed' : 'caret';
+        const caretClasses = ['caret'];
+        if (isCollapsed) caretClasses.push('collapsed');
+        const caretClass = caretClasses.join(' ');
 
         html += `<div class="month-stat" data-month="${monthKey}">
             <div class="month-header" onclick="toggleMonth('${encodedMonth}', '${idPrefix}')">
@@ -743,13 +929,17 @@ function addAutoFillButtons() {
         // Find all matching month stats across both displays
         const monthStats = document.querySelectorAll(`[data-month="${monthKey}"]`);
         monthStats.forEach(monthStat => {
-            // Check if button already exists to avoid duplicates
-            if (!monthStat.querySelector('.btn-secondary')) {
+            // Find the month-stats-summary div to place the button in
+            const summaryDiv = monthStat.querySelector('.month-flights .month-stats-summary');
+            if (summaryDiv && !summaryDiv.querySelector('.btn-secondary')) {
+                const buttonDiv = document.createElement('div');
+                buttonDiv.className = 'summary-button-container';
                 const button = document.createElement('button');
                 button.textContent = 'Auto-Fill OT Request';
                 button.className = 'btn btn-secondary';
                 button.onclick = () => autoFillOvertimeRequest(monthKey, data);
-                monthStat.appendChild(button);
+                buttonDiv.appendChild(button);
+                summaryDiv.appendChild(buttonDiv);
             }
         });
     });

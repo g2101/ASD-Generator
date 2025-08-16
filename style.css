@@ -108,6 +108,37 @@ body {
     transform: translateY(-3px) scale(1.02);
 }
 
+/* Override hover effects for summary buttons specifically */
+.summary-button-container .btn.btn-secondary:not(.disabled):hover {
+    transform: none;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+}
+
+/* Custom deployment input styling */
+#custom-deployment {
+    display: none;
+    margin-top: 10px;
+    width: 100%;
+    padding: 14px;
+    background: #1a1a1a;
+    color: #fff;
+    border: 2px solid #3a3a3a;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+}
+
+#custom-deployment:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+    transform: translateY(-1px);
+}
+
+#custom-deployment.visible {
+    display: block;
+}
+
 /* Remove-officer button (red) */
 .btn.btn-remove {
     --glow-rgb: 239,68,68;
@@ -146,10 +177,58 @@ body {
 
 .icon-shrink { flex-shrink: 0; }
 
-.month-flights { margin-top:8px; max-height:400px; overflow:auto; transition: max-height .25s ease; }
-.month-flights.collapsed { display: none; }
+.month-flights { 
+    margin-top: 8px; 
+    max-height: 400px; 
+    overflow: auto; 
+    opacity: 1;
+    transition: all 0.25s ease;
+}
 
-.month-stats-summary { margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 6px; }
+.month-flights.collapsed { 
+    display: none;
+    opacity: 0;
+}
+
+.month-stats-summary { 
+    margin-bottom: 12px; 
+    padding: 8px; 
+    background: rgba(255,255,255,0.1); 
+    border-radius: 6px; 
+}
+
+.summary-button-container {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    width: 100%;
+    box-sizing: border-box;
+    /* Contain the button's hover effects */
+    overflow: hidden;
+}
+
+.summary-button-container .btn {
+    margin: 0;
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    transform: none;
+}
+
+/* Override default button hover effects */
+.summary-button-container .btn:hover {
+    transform: none;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+}
+
+.summary-button-container .btn:not(.disabled):hover {
+    transform: none;
+}
+
+/* Ensure the button is hidden when the section is collapsed */
+.month-flights.collapsed .summary-button-container {
+    display: none;
+}
 
 .month-title { font-weight:700; }
 .month-total { font-weight:700; }
