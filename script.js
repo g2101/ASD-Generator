@@ -819,13 +819,18 @@ function generateTrainingReport() {
     const comments = document.getElementById('training-comments').value;
 
     const bbcode = `[divbox2=white][center][lspdlogo=200][color=transparent]asdbestsd[/color][asdLogo=200]
+
 [size=150][b]LOS SANTOS POLICE DEPARTMENT[/b][/size]
 [size=115][b]Air Support Division[/b][/size]
 [i]The mission is the same, only the vehicle has changed.[/i]
 [hr][/hr][center][size=125]Training Flight Report[/size][hr][/hr]
+
+
+
 [justify]
 [b]Instructor:[/b] ${instructor || 'FIRSTNAME LASTNAME'}
 [b]Flight Number:[/b] ${flightNumber || '#'}
+
 [b]Comments:[/b] ${comments || 'BRIEF SUMMARY AND FEEDBACK'}
 [/justify]`;
 
