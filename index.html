@@ -1,462 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ASD Generator</title>
-    <link rel="icon" href="./TctKg6h.png" type="image/x-icon" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <br />
-    <div class="container">
-      <div class="nav">
-        <button class="nav-btn active" onclick="showPage('flight-log')">
-          Flight Log
-        </button>
-        <button class="nav-btn" onclick="showPage('sfs-report')">
-          SFS Deployment Report
-        </button>
-        <button class="nav-btn" onclick="showPage('training-report')">
-          Student Training Flight Report
-        </button>
-        <button class="nav-btn" onclick="showPage('overtime-request')">
-          Overtime Request
-        </button>
-      </div>
 
-      <!-- Flight Log Page -->
-      <div id="flight-log" class="page active">
-        <h2>Flight Log Entry</h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASD Generator</title>
+  <link rel="icon" href="./TctKg6h.png" type="image/x-icon" />
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-        <div class="personnel-setup" id="personnel-section">
-          <h3>Personnel File Setup</h3>
-          <p class="setup-notice">
-            Please save your personnel file link before continuing
-          </p>
-          <div class="personnel-input-group">
-            <input
-              type="url"
-              id="personnel-file"
-              placeholder="Paste the link to your personnel file"
-            />
-            <button class="btn" onclick="savePersonnelFile()">
-              Save Personnel File
-            </button>
-          </div>
-        </div>
+<body>
+  <br />
+  <div class="container">
+    <div class="nav">
+      <button class="nav-btn active" onclick="showPage('flight-log')">
+        Flight Log
+      </button>
+      <button class="nav-btn" onclick="showPage('sfs-report')">
+        SFS Deployment Report
+      </button>
+      <button class="nav-btn" onclick="showPage('training-report')">
+        Student Training Flight Report
+      </button>
+      <button class="nav-btn" onclick="showPage('overtime-request')">
+        Overtime Request
+      </button>
+    </div>
 
-        <div class="stats" id="flight-stats">
-          <h3>Monthly Flight Hours</h3>
-          <br />
-          <div class="monthly-hours" id="monthly-hours-display"></div>
-        </div>
+    <!-- Flight Log Page -->
+    <div id="flight-log" class="page active">
+      <h2>Flight Log Entry</h2>
 
-        <div class="inline-group">
-          <div class="form-group">
-            <label for="flight-date">Date:</label>
-            <input type="date" id="flight-date" />
-          </div>
-          <button class="btn btn-secondary btn-small" onclick="setTodayDate()">
-            Today (UTC)
+      <div class="personnel-setup" id="personnel-section">
+        <h3>Personnel File Setup</h3>
+        <p class="setup-notice">
+          Please save your personnel file link before continuing
+        </p>
+        <div class="personnel-input-group">
+          <input type="url" id="personnel-file" placeholder="Paste the link to your personnel file" />
+          <button class="btn" onclick="savePersonnelFile()">
+            Save Personnel File
           </button>
         </div>
+      </div>
 
+      <div class="stats" id="flight-stats">
+        <h3>Monthly Flight Hours</h3>
+        <br />
+        <div class="monthly-hours" id="monthly-hours-display"></div>
+      </div>
+
+      <div class="inline-group">
         <div class="form-group">
-          <label for="flight-hours">Total Flight Hours (Optional):</label>
-          <input
-            type="number"
-            id="flight-hours"
-            step="0.1"
-            min="0"
-            placeholder="0.0"
-          />
+          <label for="flight-date">Date:</label>
+          <input type="date" id="flight-date" />
         </div>
+        <button class="btn btn-secondary btn-small" onclick="setTodayDate()">
+          Today (UTC)
+        </button>
+      </div>
 
-        <div class="form-group">
-          <label>Select Activities:</label>
-          <div class="checkbox-group">
-            <div class="checkbox-item" onclick="toggleCheckbox('pursuit')">
-              <input type="checkbox" id="pursuit" value="2" /><label
-                for="pursuit"
-                >Pursuit Deployment: 2 points</label
-              >
-            </div>
-            <div
-              class="checkbox-item"
-              onclick="toggleCheckbox('other-deployment')"
-            >
-              <input type="checkbox" id="other-deployment" value="2" /><label
-                for="other-deployment"
-                >Other Deployment: 2 points</label
-              >
-            </div>
-            <div class="checkbox-item" onclick="toggleCheckbox('patrol-30')">
-              <input type="checkbox" id="patrol-30" value="3" /><label
-                for="patrol-30"
-                >30+ Minute Patrol: 3 points</label
-              >
-            </div>
-            <div class="checkbox-item" onclick="toggleCheckbox('patrol-60')">
-              <input type="checkbox" id="patrol-60" value="4" /><label
-                for="patrol-60"
-                >60+ Minute Patrol: 4 points</label
-              >
-            </div>
-            <div class="checkbox-item" onclick="toggleCheckbox('patrol-90')">
-              <input type="checkbox" id="patrol-90" value="5" /><label
-                for="patrol-90"
-                >90+ Minute Patrol: 5 points</label
-              >
-            </div>
-            <div
-              class="checkbox-item"
-              onclick="toggleCheckbox('event-deployment')"
-            >
-              <input type="checkbox" id="event-deployment" value="2" /><label
-                for="event-deployment"
-                >Event Deployment: 2 points</label
-              >
-            </div>
-            <div
-              class="checkbox-item"
-              onclick="toggleCheckbox('sfs-deployment')"
-            >
-              <input type="checkbox" id="sfs-deployment" value="5" /><label
-                for="sfs-deployment"
-                >SFS Deployment: 5 points</label
-              >
-            </div>
-            <div
-              class="checkbox-item"
-              onclick="toggleCheckbox('partnered-flight')"
-            >
-              <input type="checkbox" id="partnered-flight" value="2" /><label
-                for="partnered-flight"
-                >Partnered Flight: 2 points</label
-              >
-            </div>
-            <div
-              class="checkbox-item"
-              onclick="toggleCheckbox('training-instructor')"
-            >
-              <input type="checkbox" id="training-instructor" value="6" /><label
-                for="training-instructor"
-                >Training Flight (Instructor): 6 points</label
-              >
-            </div>
+      <div class="form-group">
+        <label for="flight-hours">Total Flight Hours (Optional):</label>
+        <input type="number" id="flight-hours" step="0.1" min="0" placeholder="0.0" />
+      </div>
+
+      <div class="form-group">
+        <label>Select Activities:</label>
+        <div class="checkbox-group">
+          <div class="checkbox-item" onclick="toggleCheckbox('pursuit')">
+            <input type="checkbox" id="pursuit" value="2" /><label for="pursuit">Pursuit Deployment: 2 points</label>
           </div>
-        </div>
-
-        <button
-          id="generate-flight-btn"
-          class="btn disabled"
-          onclick="generateFlightLog()"
-        >
-          Generate Flight Log
-        </button>
-        <button
-          class="btn btn-secondary"
-          onclick="copyToClipboard('flight-output')"
-        >
-          Copy to Clipboard
-        </button>
-        <button class="btn btn-secondary" onclick="openPersonnelFile()">
-          Personnel File
-        </button>
-
-        <br /><br />
-
-        <div class="output">
-          <textarea
-            id="flight-output"
-            readonly
-            placeholder="Generated BBCode will appear here..."
-          ></textarea>
+          <div class="checkbox-item" onclick="toggleCheckbox('other-deployment')">
+            <input type="checkbox" id="other-deployment" value="2" /><label for="other-deployment">Other Deployment: 2
+              points</label>
+          </div>
+          <div class="checkbox-item" onclick="toggleCheckbox('patrol-30')">
+            <input type="checkbox" id="patrol-30" value="3" /><label for="patrol-30">30+ Minute Patrol: 3 points</label>
+          </div>
+          <div class="checkbox-item" onclick="toggleCheckbox('patrol-60')">
+            <input type="checkbox" id="patrol-60" value="4" /><label for="patrol-60">60+ Minute Patrol: 4 points</label>
+          </div>
+          <div class="checkbox-item" onclick="toggleCheckbox('patrol-90')">
+            <input type="checkbox" id="patrol-90" value="5" /><label for="patrol-90">90+ Minute Patrol: 5 points</label>
+          </div>
+          <div class="checkbox-item" onclick="toggleCheckbox('event-deployment')">
+            <input type="checkbox" id="event-deployment" value="2" /><label for="event-deployment">Event Deployment: 2
+              points</label>
+          </div>
+          <div class="checkbox-item" onclick="toggleCheckbox('sfs-deployment')">
+            <input type="checkbox" id="sfs-deployment" value="5" /><label for="sfs-deployment">SFS Deployment: 5
+              points</label>
+          </div>
+          <div class="checkbox-item" onclick="toggleCheckbox('partnered-flight')">
+            <input type="checkbox" id="partnered-flight" value="2" /><label for="partnered-flight">Partnered Flight: 2
+              points</label>
+          </div>
+          <div class="checkbox-item" onclick="toggleCheckbox('training-instructor')">
+            <input type="checkbox" id="training-instructor" value="6" /><label for="training-instructor">Training Flight
+              (Instructor): 6 points</label>
+          </div>
         </div>
       </div>
 
-      <!-- SFS Deployment Report Page -->
-      <div id="sfs-report" class="page">
-        <h2>SFS Deployment Report</h2>
+      <button id="generate-flight-btn" class="btn disabled" onclick="generateFlightLog()">
+        Generate Flight Log
+      </button>
+      <button class="btn btn-secondary" onclick="copyToClipboard('flight-output')">
+        Copy to Clipboard
+      </button>
+      <button class="btn btn-secondary" onclick="openPersonnelFile()">
+        Personnel File
+      </button>
 
-        <h3>Section I - Personnel</h3>
+      <br /><br />
 
-        <div class="form-group">
-          <label for="tactical-pilot">Tactical Pilot:</label>
-          <input
-            type="text"
-            id="tactical-pilot"
-            placeholder="DIVISION RANK FIRSTNAME LASTNAME"
-          />
-        </div>
-
-        <div class="form-group">
-          <label>Tactical Flight Officers:</label>
-          <div id="flight-officers"></div>
-          <div class="inline-group small-gap">
-            <button class="btn add-member-btn" onclick="addFlightOfficer()">
-              + Add Officer
-            </button>
-            <button
-              id="remove-officer-btn"
-              class="btn btn-remove disabled"
-              onclick="removeLastOfficer()"
-              disabled
-            >
-              Remove Officer
-            </button>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="deployment-type">Type of Deployment:</label>
-          <select id="deployment-type">
-            <option value="Event">Event</option>
-            <option value="TFS">TFS</option>
-            <option value="SFS Operation">SFS Operation</option>
-            <option value="VIP Transport">VIP Transport</option>
-            <option value="HRAW Assistance">HRAW Assistance</option>
-            <option value="DB Sting OP">DB Sting OP</option>
-            <option value="Custom">Custom (type below)</option>
-          </select>
-          <input
-            type="text"
-            id="custom-deployment"
-            placeholder="Enter custom deployment type"
-            class="hidden-input"
-          />
-        </div>
-
-        <h3>Section II - Time Information</h3>
-
-        <div class="inline-group small-gap">
-          <div class="form-group">
-            <label for="sfs-date">Date:</label
-            ><input type="date" id="sfs-date" />
-          </div>
-          <button class="btn btn-secondary btn-small" onclick="setSFSToday()">
-            Today (UTC)
-          </button>
-        </div>
-
-        <div class="inline-group">
-          <div class="form-group">
-            <label for="time-started">Time Started (UTC):</label
-            ><input type="text" id="time-started" placeholder="XX:XX (UTC)" />
-          </div>
-          <div class="form-group">
-            <label for="time-ended">Time Ended (UTC):</label
-            ><input type="text" id="time-ended" placeholder="XX:XX (UTC)" />
-          </div>
-        </div>
-
-        <h3>Section III - Report Details</h3>
-
-        <div class="form-group">
-          <label for="narrative">Short Detailed Narrative:</label
-          ><textarea
-            id="narrative"
-            rows="4"
-            placeholder="Enter detailed narrative of the deployment..."
-          ></textarea>
-        </div>
-        <div class="form-group">
-          <label for="additional-notes">Additional Notes:</label
-          ><textarea
-            id="additional-notes"
-            rows="3"
-            placeholder="Any additional notes..."
-          ></textarea>
-        </div>
-        <div class="form-group">
-          <label for="ooc-notes">Additional OOC Notes:</label
-          ><textarea
-            id="ooc-notes"
-            rows="3"
-            placeholder="Out of character notes..."
-          ></textarea>
-        </div>
-        <div class="form-group">
-          <label for="case-file">Case File Number:</label
-          ><input
-            type="text"
-            id="case-file"
-            placeholder="Enter case file number"
-          />
-        </div>
-        <div class="form-group">
-          <label for="signature">Signature:</label
-          ><input type="text" id="signature" placeholder="Your signature" />
-        </div>
-
-        <button class="btn" onclick="generateSFSReport()">
-          Generate SFS Report
-        </button>
-        <button
-          class="btn btn-secondary"
-          onclick="copyToClipboard('sfs-output')"
-        >
-          Copy to Clipboard
-        </button>
-        <button class="btn btn-secondary" onclick="openSFSReports()">
-          SFS Deployment Reports
-        </button>
-
-        <div class="output">
-          <textarea
-            id="sfs-output"
-            readonly
-            placeholder="Generated BBCode will appear here..."
-          ></textarea>
-        </div>
-      </div>
-
-      <!-- Student Training Flight Report Page -->
-      <div id="training-report" class="page">
-        <h2>Student Training Flight Report</h2>
-
-        <div class="form-group">
-          <label for="instructor-name">Instructor:</label
-          ><input
-            type="text"
-            id="instructor-name"
-            placeholder="FIRSTNAME LASTNAME"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="flight-number">Flight Number:</label
-          ><input type="number" id="flight-number" min="1" placeholder="1" />
-        </div>
-
-        <div class="form-group">
-          <label for="training-comments">Comments:</label
-          ><textarea
-            id="training-comments"
-            rows="6"
-            placeholder="Brief summary and feedback about the training flight..."
-          ></textarea>
-        </div>
-
-        <button class="btn" onclick="generateTrainingReport()">
-          Generate Training Report
-        </button>
-        <button
-          class="btn btn-secondary"
-          onclick="copyToClipboard('training-output')"
-        >
-          Copy to Clipboard
-        </button>
-        <button class="btn btn-secondary" onclick="openStudentArea()">
-          Student Area
-        </button>
-
-        <div class="output">
-          <textarea
-            id="training-output"
-            readonly
-            placeholder="Generated BBCode will appear here..."
-          ></textarea>
-        </div>
-      </div>
-
-      <!-- Overtime Request Page -->
-      <div id="overtime-request" class="page">
-        <h2>Overtime Request</h2>
-
-        <div class="stats" id="ot-flight-stats">
-          <h3>Monthly Flight Hours</h3>
-          <br />
-          <div class="monthly-hours" id="ot-monthly-hours-display"></div>
-        </div>
-
-        <div class="form-group">
-          <label for="ot-officer-name">Officer Name and Rank:</label>
-          <input
-            type="text"
-            id="ot-officer-name"
-            placeholder="DIVISION RANK FIRSTNAME LASTNAME"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="ot-flightlog-link">Personnel File Link:</label>
-          <input
-            type="url"
-            id="ot-flightlog-link"
-            placeholder="The link to your main personnel file."
-          />
-          <button class="btn btn-secondary" onclick="openPersonnelFile()">
-            Personnel File
-          </button>
-        </div>
-
-        <div class="form-group">
-          <label for="ot-regular-hours"
-            >Total regular (ASTRO) hours for month:</label
-          >
-          <input type="text" id="ot-regular-hours" placeholder="e.g. 16" />
-        </div>
-
-        <div class="form-group">
-          <label for="ot-routing">Personal Bank Routing #:</label>
-          <input type="text" id="ot-routing" placeholder="(( /routing ))" />
-        </div>
-
-        <div class="form-group">
-          <label for="ot-month">Month for OT claim (MONTH/YEAR):</label>
-          <input type="text" id="ot-month" placeholder="e.g. AUG/2025" />
-        </div>
-
-        <div class="form-group">
-          <label for="ot-sfs-hours"
-            >Total SFS flight hours for month (if applicable):</label
-          >
-          <input type="text" id="ot-sfs-hours" placeholder="e.g. 12.5" />
-        </div>
-
-        <div class="form-group">
-          <label for="ot-amount">Total amount payable:</label>
-          <input
-            type="text"
-            id="ot-amount"
-            placeholder="Normal: $3,000 * HOURS + SFS: $6,000 * HOURS "
-          />
-        </div>
-
-        <button class="btn" onclick="generateOvertimeRequest()">
-          Generate Overtime Request
-        </button>
-        <button
-          class="btn btn-secondary"
-          onclick="copyToClipboard('ot-output')"
-        >
-          Copy to Clipboard
-        </button>
-        <button class="btn btn-secondary" onclick="openOvertimeForum()">
-          Overtime Requests
-        </button>
-
-        <div class="output">
-          <textarea
-            id="ot-output"
-            readonly
-            placeholder="Generated BBCode will appear here..."
-          ></textarea>
-        </div>
+      <div class="output">
+        <textarea id="flight-output" readonly placeholder="Generated BBCode will appear here..."></textarea>
       </div>
     </div>
 
-    <script src="script.js"></script>
-    <script>
-      // Prevent the animated page from starting slightly scrolled
-      window.addEventListener("load", function () {
-        try {
-          document.documentElement.scrollTop = 0;
-          window.scrollTo(0, 0);
-        } catch (e) {}
-      });
-    </script>
-  </body>
+    <!-- SFS Deployment Report Page -->
+    <div id="sfs-report" class="page">
+      <h2>SFS Deployment Report</h2>
+
+      <h3>Section I - Personnel</h3>
+
+      <div class="form-group">
+        <label for="tactical-pilot">Tactical Pilot:</label>
+        <input type="text" id="tactical-pilot" placeholder="DIVISION RANK FIRSTNAME LASTNAME" />
+      </div>
+
+      <div class="form-group">
+        <label>Tactical Flight Officers:</label>
+        <div id="flight-officers"></div>
+        <div class="inline-group small-gap">
+          <button class="btn add-member-btn" onclick="addFlightOfficer()">
+            + Add Officer
+          </button>
+          <button id="remove-officer-btn" class="btn btn-remove disabled" onclick="removeLastOfficer()" disabled>
+            Remove Officer
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="deployment-type">Type of Deployment:</label>
+        <select id="deployment-type">
+          <option value="Event">Event</option>
+          <option value="TFS">TFS</option>
+          <option value="SFS Operation">SFS Operation</option>
+          <option value="VIP Transport">VIP Transport</option>
+          <option value="HRAW Assistance">HRAW Assistance</option>
+          <option value="DB Sting OP">DB Sting OP</option>
+          <option value="Custom">Custom (type below)</option>
+        </select>
+        <input type="text" id="custom-deployment" placeholder="Enter custom deployment type" class="hidden-input" />
+      </div>
+
+      <h3>Section II - Time Information</h3>
+
+      <div class="inline-group small-gap">
+        <div class="form-group">
+          <label for="sfs-date">Date:</label><input type="date" id="sfs-date" />
+        </div>
+        <button class="btn btn-secondary btn-small" onclick="setSFSToday()">
+          Today (UTC)
+        </button>
+      </div>
+
+      <div class="inline-group">
+        <div class="form-group">
+          <label for="time-started">Time Started (UTC):</label><input type="text" id="time-started"
+            placeholder="XX:XX (UTC)" />
+        </div>
+        <div class="form-group">
+          <label for="time-ended">Time Ended (UTC):</label><input type="text" id="time-ended"
+            placeholder="XX:XX (UTC)" />
+        </div>
+      </div>
+
+      <h3>Section III - Report Details</h3>
+
+      <div class="form-group">
+        <label for="narrative">Short Detailed Narrative:</label><textarea id="narrative" rows="4"
+          placeholder="Enter detailed narrative of the deployment..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="additional-notes">Additional Notes:</label><textarea id="additional-notes" rows="3"
+          placeholder="Any additional notes..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="ooc-notes">Additional OOC Notes:</label><textarea id="ooc-notes" rows="3"
+          placeholder="Out of character notes..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="case-file">Case File Number:</label><input type="text" id="case-file"
+          placeholder="Enter case file number" />
+      </div>
+      <div class="form-group">
+        <label for="signature">Signature:</label><input type="text" id="signature" placeholder="Your signature" />
+      </div>
+
+      <button class="btn" onclick="generateSFSReport()">
+        Generate SFS Report
+      </button>
+      <button class="btn btn-secondary" onclick="copyToClipboard('sfs-output')">
+        Copy to Clipboard
+      </button>
+      <button class="btn btn-secondary" onclick="openSFSReports()">
+        SFS Deployment Reports
+      </button>
+
+      <div class="output">
+        <textarea id="sfs-output" readonly placeholder="Generated BBCode will appear here..."></textarea>
+      </div>
+    </div>
+
+    <!-- Student Training Flight Report Page -->
+    <div id="training-report" class="page">
+      <h2>Student Training Flight Report</h2>
+
+      <div class="form-group">
+        <label for="instructor-name">Instructor:</label><input type="text" id="instructor-name"
+          placeholder="FIRSTNAME LASTNAME" />
+      </div>
+
+      <div class="form-group">
+        <label for="flight-number">Flight Number:</label><input type="number" id="flight-number" min="1"
+          placeholder="1" />
+      </div>
+
+      <div class="form-group">
+        <label for="training-comments">Comments:</label><textarea id="training-comments" rows="6"
+          placeholder="Brief summary and feedback about the training flight..."></textarea>
+      </div>
+
+      <button class="btn" onclick="generateTrainingReport()">
+        Generate Training Report
+      </button>
+      <button class="btn btn-secondary" onclick="copyToClipboard('training-output')">
+        Copy to Clipboard
+      </button>
+      <button class="btn btn-secondary" onclick="openStudentArea()">
+        Student Area
+      </button>
+
+      <div class="output">
+        <textarea id="training-output" readonly placeholder="Generated BBCode will appear here..."></textarea>
+      </div>
+    </div>
+
+    <!-- Overtime Request Page -->
+    <div id="overtime-request" class="page">
+      <h2>Overtime Request</h2>
+
+      <div class="stats" id="ot-flight-stats">
+        <h3>Monthly Flight Hours</h3>
+        <br />
+        <div class="monthly-hours" id="ot-monthly-hours-display"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="ot-officer-name">Officer Name and Rank:</label>
+        <input type="text" id="ot-officer-name" placeholder="DIVISION RANK FIRSTNAME LASTNAME" />
+      </div>
+
+      <div class="form-group">
+        <label for="ot-flightlog-link">Personnel File Link:</label>
+        <input type="url" id="ot-flightlog-link" placeholder="The link to your main personnel file." />
+        <button class="btn btn-secondary" onclick="openPersonnelFile()">
+          Personnel File
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label for="ot-regular-hours">Total regular (ASTRO) hours for month:</label>
+        <input type="text" id="ot-regular-hours" placeholder="e.g. 16" />
+      </div>
+
+      <div class="form-group">
+        <label for="ot-routing">Personal Bank Routing #:</label>
+        <input type="text" id="ot-routing" placeholder="(( /routing ))" />
+      </div>
+
+      <div class="form-group">
+        <label for="ot-month">Month for OT claim (MONTH/YEAR):</label>
+        <input type="text" id="ot-month" placeholder="e.g. AUG/2025" />
+      </div>
+
+      <div class="form-group">
+        <label for="ot-sfs-hours">Total SFS flight hours for month (if applicable):</label>
+        <input type="text" id="ot-sfs-hours" placeholder="e.g. 12.5" />
+      </div>
+
+      <div class="form-group">
+        <label for="ot-training-hours">Total training flight hours for month (Instructors Only):</label>
+        <input type="text" id="ot-training-hours" placeholder="e.g. 8.0" />
+      </div>
+
+      <div class="form-group">
+        <label for="ot-amount">Total amount payable:</label>
+        <input type="text" id="ot-amount" placeholder="Normal: $3,000 * HOURS + SFS: $6,000 * HOURS + Training: $5,000 * HOURS" />
+      </div>
+
+      <button class="btn" onclick="generateOvertimeRequest()">
+        Generate Overtime Request
+      </button>
+      <button class="btn btn-secondary" onclick="copyToClipboard('ot-output')">
+        Copy to Clipboard
+      </button>
+      <button class="btn btn-secondary" onclick="openOvertimeForum()">
+        Overtime Requests
+      </button>
+
+      <div class="output">
+        <textarea id="ot-output" readonly placeholder="Generated BBCode will appear here..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Prevent the animated page from starting slightly scrolled
+    window.addEventListener("load", function () {
+      try {
+        document.documentElement.scrollTop = 0;
+        window.scrollTo(0, 0);
+      } catch (e) { }
+    });
+  </script>
+</body>
+
 </html>

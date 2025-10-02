@@ -298,32 +298,33 @@ function openPersonnelFile() {
 function calculateMonthStats(flights) {
     let astroHours = 0;
     let sfsHours = 0;
+    let trainingHours = 0;
     if (Array.isArray(flights)) {
         flights.forEach(flight => {
             if (typeof flight.hours === 'number' && !isNaN(flight.hours)) {
                 if (flight.type === 'SFS') {
                     sfsHours += flight.hours;
+                } else if (flight.type === 'Training') {
+                    trainingHours += flight.hours;
                 } else {
                     astroHours += flight.hours;
                 }
             }
         });
     }
-    const totalHours = astroHours + sfsHours;
+    const totalHours = astroHours + sfsHours + trainingHours;
     const astroOT = astroHours * 3000;
     const sfsOT = sfsHours * 6000;
-    const totalOT = astroOT + sfsOT;
-    return { astroHours, sfsHours, totalHours, astroOT, sfsOT, totalOT };
-}
-
-function formatMoney(amount) {
-    return '$' + amount.toLocaleString('en-US');
+    const trainingOT = trainingHours * 5000;
+    const totalOT = astroOT + sfsOT + trainingOT;
+    return { astroHours, sfsHours, trainingHours, totalHours, astroOT, sfsOT, trainingOT, totalOT };
 }
 
 // Helper function to calculate flight hours and overtime
 function calculateFlightStats(flights) {
     let astroHours = 0;
     let sfsHours = 0;
+    let trainingHours = 0;
     let totalPoints = 0;
     let totalFlights = 0;
 
@@ -333,6 +334,8 @@ function calculateFlightStats(flights) {
             if (typeof flight.hours === 'number' && !isNaN(flight.hours)) {
                 if (flight.type === 'SFS') {
                     sfsHours += flight.hours;
+                } else if (flight.type === 'Training') {
+                    trainingHours += flight.hours;
                 } else {
                     astroHours += flight.hours;
                 }
@@ -343,17 +346,20 @@ function calculateFlightStats(flights) {
         });
     }
 
-    const totalHours = astroHours + sfsHours;
+    const totalHours = astroHours + sfsHours + trainingHours;
     const astroOT = astroHours * 3000;
     const sfsOT = sfsHours * 6000;
-    const totalOT = astroOT + sfsOT;
+    const trainingOT = trainingHours * 5000;
+    const totalOT = astroOT + sfsOT + trainingOT;
 
     return {
         astroHours,
         sfsHours,
+        trainingHours,
         totalHours,
         astroOT,
         sfsOT,
+        trainingOT,
         totalOT,
         totalPoints,
         totalFlights
@@ -614,6 +620,7 @@ function generateFlightLog() {
 
     // Check if SFS deployment is checked
     const isSFS = document.getElementById('sfs-deployment') && document.getElementById('sfs-deployment').checked;
+    const isTraining = document.getElementById('training-instructor') && document.getElementById('training-instructor').checked;
 
     monthlyHours[monthKey].flights.push({
         points,
@@ -621,7 +628,7 @@ function generateFlightLog() {
         timestamp: timestampUTC,
         hours: (hours !== null && !isNaN(hours)) ? Number(hours) : null,
         entryDate: date,
-        type: isSFS ? 'SFS' : 'ASTRO (Normal)'
+        type: isSFS ? 'SFS' : isTraining ? 'Training' : 'ASTRO (Normal)'
     });
 
     saveMonthlyHoursToStorage();
@@ -843,6 +850,7 @@ function generateOvertimeRequest() {
     const flightLink = document.getElementById('ot-flightlog-link').value.trim();
     const regularHours = document.getElementById('ot-regular-hours').value.trim();
     const routing = document.getElementById('ot-routing').value.trim();
+    const trainingHours = document.getElementById('ot-training-hours').value.trim();
     const month = document.getElementById('ot-month').value.trim();
     const sfsHours = document.getElementById('ot-sfs-hours').value.trim();
     const amount = document.getElementById('ot-amount').value.trim();
@@ -856,6 +864,7 @@ function generateOvertimeRequest() {
 [b]Personal Bank Routing #:[/b] ${routing || ''}
 [b]Month for OT claim:[/b] ${month || 'MONTH/YEAR'}
 [b]Total SFS flight hours for month (if applicable:)[/b] ${sfsHours || ''}
+[b]Total training flight hours for month (Instructors Only:)[/b] ${trainingHours || ''}
 [b]Amount payable:[/b] ${amount || ''}`;
 
     document.getElementById('ot-output').value = bbcode;
@@ -937,6 +946,7 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
                 <div class="month-stats-summary">
                     ${formatStat('ASTRO', stats.astroHours, stats.astroOT)}
                     ${formatStat('SFS', stats.sfsHours, stats.sfsOT)}
+                    ${formatStat('Training', stats.trainingHours, stats.trainingOT)}
                     ${stats.totalFlights > 0 ? '<div><strong>Total Flights:</strong> ' + stats.totalFlights + '</div>' : ''}
                     ${stats.totalPoints > 0 ? '<div><strong>Total Points:</strong> ' + stats.totalPoints + '</div>' : ''}
                     ${stats.totalHours > 0 ? '<div><strong>Total Hours:</strong> ' + stats.totalHours.toFixed(1) + 'h</div>' : ''}
@@ -957,7 +967,7 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
                 const flightType = flight.type || 'ASTRO (Normal)'; // Default to normal if type not set
                 const points = typeof flight.points === 'number' ? flight.points : 0;
                 // per-flight OT calculation: ASTRO = $3,000/hr, SFS = $6,000/hr
-                const perHourRate = (flight.type && flight.type === 'SFS') ? 6000 : 3000;
+                const perHourRate = (flight.type === 'SFS') ? 6000 : (flight.type === 'Training') ? 5000 : 3000;
                 const otAmount = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? Math.round(flight.hours * perHourRate) : 0;
                 // build parts and omit hours/OT if not provided
                 const parts = [dateDisplay, flightType, timeOnly];
@@ -1029,6 +1039,7 @@ function autoFillOvertimeRequest(monthKey, data) {
     document.getElementById('ot-regular-hours').value = stats.astroHours.toFixed(1);
     document.getElementById('ot-sfs-hours').value = stats.sfsHours.toFixed(1);
     document.getElementById('ot-amount').value = formatMoney(stats.totalOT);
+    document.getElementById('ot-training-hours').value = stats.trainingHours.toFixed(1);
 
     // Format month as "MMM/YYYY"
     const parts = monthKey.split(' ');
