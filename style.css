@@ -516,3 +516,13 @@ body {
   white-space: nowrap;
   padding: 12px 24px;
 }
+
+.flight-clickable {
+  cursor: pointer;
+  flex: 1;
+}
+
+.flight-clickable:hover {
+  text-decoration: underline;
+  color: #60a5fa;
+}
