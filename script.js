@@ -631,13 +631,23 @@ function generateFlightLog() {
     const isSFS = document.getElementById('sfs-deployment') && document.getElementById('sfs-deployment').checked;
     const isTraining = document.getElementById('training-instructor') && document.getElementById('training-instructor').checked;
 
+    // Store which activities were selected for later regeneration
+    const selectedActivities = [];
+    pointActivities.forEach(activity => {
+        const checkbox = document.getElementById(activity.id);
+        if (checkbox && checkbox.checked) {
+            selectedActivities.push(activity.id);
+        }
+    });
+
     monthlyHours[monthKey].flights.push({
         points,
         id: flightId,
         timestamp: timestampUTC,
         hours: (hours !== null && !isNaN(hours)) ? Number(hours) : null,
         entryDate: date,
-        type: isSFS ? 'SFS' : isTraining ? 'Training' : 'ASTRO (Normal)'
+        type: isSFS ? 'SFS' : isTraining ? 'Training' : 'ASTRO (Normal)',
+        activities: selectedActivities // Store the selected activities
     });
 
     saveMonthlyHoursToStorage();
@@ -765,10 +775,13 @@ function regenerateFlightLog(encodedMonthKey, flightId) {
         { id: 'training-instructor', name: 'Training Flight (Instructor)', points: 6 }
     ];
 
-    // Create all activities as unchecked by default
+    // Create activities HTML, checking if they were selected in the original flight
     let activitiesHTML = '';
+    const selectedActivities = flight.activities || []; // Use stored activities or empty array for old entries
     orderedActivities.forEach(activity => {
-        activitiesHTML += `[cb] [b]${activity.name}[/b]: ${activity.points} points\n`;
+        const isChecked = selectedActivities.includes(activity.id);
+        const checkboxCode = isChecked ? '[cbc]' : '[cb]';
+        activitiesHTML += `${checkboxCode} [b]${activity.name}[/b]: ${activity.points} points\n`;
     });
 
     const bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]
