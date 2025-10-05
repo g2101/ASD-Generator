@@ -791,6 +791,21 @@ ${activitiesHTML}[/list][/divbox2]`;
             b.classList.add('active');
         }
     });
+
+    // Auto-copy to clipboard
+    const textarea = document.getElementById('flight-output');
+    textarea.select();
+    textarea.setSelectionRange(0, 99999);
+    try {
+        document.execCommand('copy');
+    } catch (e) {
+        console.warn('Failed to copy to clipboard:', e);
+    }
+
+    // Scroll to the output box
+    setTimeout(() => {
+        textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
 }
 
 // SFS & Training report generators retained from previous implementation
@@ -1136,6 +1151,7 @@ updateMonthlyHoursDisplay = (function (original) {
     };
 
 })(updateMonthlyHoursDisplay);
+
 
 
 
