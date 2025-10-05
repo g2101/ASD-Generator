@@ -76,6 +76,13 @@ window.onload = function () {
     updateFlightLogButton();
     updateRemoveOfficerBtn();
 
+    const flightHoursInput = document.getElementById('flight-hours');
+if (flightHoursInput) {
+    flightHoursInput.addEventListener('wheel', function(e) {
+        e.preventDefault();
+    });
+}
+
     // Auto-fill personnel file link in OT request if saved
     const savedLink = getCookie('personnelFileLink');
     if (savedLink) {
@@ -1066,3 +1073,4 @@ updateMonthlyHoursDisplay = (function (original) {
     };
 
 })(updateMonthlyHoursDisplay);
+
