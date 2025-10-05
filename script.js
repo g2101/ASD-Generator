@@ -271,13 +271,12 @@ function showPage(pageId) {
 
 function setTodayDate() {
     const today = new Date();
-    const utcDate = new Date(today.getTime() + today.getTimezoneOffset() * 60000);
-    document.getElementById('flight-date').value = utcDate.toISOString().split('T')[0];
+    document.getElementById('flight-date').value = today.toISOString().split('T')[0];
     updateFlightLogButton();
 }
 function setSFSToday() {
-    const today = new Date(); const utcDate = new Date(today.getTime() + today.getTimezoneOffset() * 60000);
-    document.getElementById('sfs-date').value = utcDate.toISOString().split('T')[0];
+    const today = new Date();
+    document.getElementById('sfs-date').value = today.toISOString().split('T')[0];
 }
 
 function savePersonnelFile() {
@@ -1065,4 +1064,5 @@ updateMonthlyHoursDisplay = (function (original) {
         original();
         addAutoFillButtons();
     };
+
 })(updateMonthlyHoursDisplay);
