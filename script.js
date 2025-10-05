@@ -494,8 +494,11 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
                 if (otAmount > 0 && hoursText !== null) parts.push(formatMoney(otAmount));
                 const line = parts.join(' - ');
                 html += `<div class="flight-entry" id="flight-${safeId}">
-                                    <div class="flight-clickable" onclick="regenerateFlightLog('${encodedMonth}','${safeId}')">${line}</div>
-                                    <div><button class="flight-remove-btn" onclick="removeFlight('${encodedMonth}','${safeId}')">✕</button></div>
+                                    <div>${line}</div>
+                                    <div class="flight-actions">
+                                        <button class="flight-copy-btn" onclick="regenerateFlightLog('${encodedMonth}','${safeId}')">📋</button>
+                                        <button class="flight-remove-btn" onclick="removeFlight('${encodedMonth}','${safeId}')">✕</button>
+                                    </div>
                                 </div>`;
             });
         } else {
@@ -1040,7 +1043,10 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
                 const line = parts.join(' - ');
                 html += `<div class="flight-entry" id="ot-flight-${safeId}">
                             <div>${line}</div>
-                            <div><button class="flight-remove-btn" onclick="removeFlight('${encodedMonth}','${safeId}')">✕</button></div>
+                            <div class="flight-actions">
+                                <button class="flight-copy-btn" onclick="regenerateFlightLog('${encodedMonth}','${safeId}')">📋</button>
+                                <button class="flight-remove-btn" onclick="removeFlight('${encodedMonth}','${safeId}')">✕</button>
+                            </div>
                         </div>`;
             });
         } else {
@@ -1130,5 +1136,6 @@ updateMonthlyHoursDisplay = (function (original) {
     };
 
 })(updateMonthlyHoursDisplay);
+
 
 
