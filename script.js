@@ -494,7 +494,7 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
                 if (otAmount > 0 && hoursText !== null) parts.push(formatMoney(otAmount));
                 const line = parts.join(' - ');
                 html += `<div class="flight-entry" id="flight-${safeId}">
-                                    <div>${line}</div>
+                                    <div class="flight-clickable" onclick="regenerateFlightLog('${encodedMonth}','${safeId}')">${line}</div>
                                     <div><button class="flight-remove-btn" onclick="removeFlight('${encodedMonth}','${safeId}')">✕</button></div>
                                 </div>`;
             });
@@ -731,6 +731,63 @@ function removeFlight(encodedMonthKey, flightId) {
 
     saveMonthlyHoursToStorage();
     updateMonthlyHoursDisplay();
+}
+
+// regenerate BBCode for a past flight log entry
+function regenerateFlightLog(encodedMonthKey, flightId) {
+    const monthKey = decodeURIComponent(encodedMonthKey);
+    if (!monthlyHours[monthKey]) return;
+    const flights = monthlyHours[monthKey].flights || [];
+    const flight = flights.find(f => String(f.id) === String(flightId));
+    if (!flight) return;
+
+    // Parse the entry date
+    const dateObj = new Date(flight.entryDate + 'T00:00:00Z');
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    const formattedDate = String(dateObj.getUTCDate()).padStart(2, '0') + '/' + months[dateObj.getUTCMonth()] + '/' + dateObj.getUTCFullYear();
+    
+    // Show N/A when hours missing, ensure exactly one decimal place
+    const hoursDisplay = (flight.hours !== null && !isNaN(flight.hours)) ? Number(flight.hours.toFixed(1)) : 'N/A';
+
+    // Define the correct order of activities and their display names
+    const orderedActivities = [
+        { id: 'pursuit', name: 'Pursuit Deployment', points: 2 },
+        { id: 'other-deployment', name: 'Other Deployment', points: 2 },
+        { id: 'patrol-30', name: '30+ Minute Patrol', points: 3 },
+        { id: 'patrol-60', name: '60+ Minute Patrol', points: 4 },
+        { id: 'patrol-90', name: '90+ Minute Patrol', points: 5 },
+        { id: 'event-deployment', name: 'Event Deployment', points: 2 },
+        { id: 'sfs-deployment', name: 'SFS Deployment', points: 5 },
+        { id: 'partnered-flight', name: 'Partnered Flight', points: 2 },
+        { id: 'training-instructor', name: 'Training Flight (Instructor)', points: 6 }
+    ];
+
+    // Create all activities as unchecked by default
+    let activitiesHTML = '';
+    orderedActivities.forEach(activity => {
+        activitiesHTML += `[cb] [b]${activity.name}[/b]: ${activity.points} points\n`;
+    });
+
+    const bbcode = `[divbox2=white][center][b]FLIGHT LOG ENTRY[/b][/center]
+[hr][/hr]
+
+[list=none][*][b]Date[/b]: ${formattedDate}
+[*][b]Total Flight Hours (Optional)[/b]: ${hoursDisplay} [/list]
+
+[list=none]
+${activitiesHTML}[/list][/divbox2]`;
+
+    document.getElementById('flight-output').value = bbcode;
+    
+    // Switch to flight log page
+    showPage('flight-log');
+    const navBtns = document.querySelectorAll('.nav-btn');
+    navBtns.forEach(b => {
+        b.classList.remove('active');
+        if (b.getAttribute('onclick') === "showPage('flight-log')") {
+            b.classList.add('active');
+        }
+    });
 }
 
 // SFS & Training report generators retained from previous implementation
@@ -1073,4 +1130,5 @@ updateMonthlyHoursDisplay = (function (original) {
     };
 
 })(updateMonthlyHoursDisplay);
+
 
