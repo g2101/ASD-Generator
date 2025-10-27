@@ -62,7 +62,7 @@
 
       <div class="form-group">
         <label for="flight-hours">Total Flight Hours (Optional):</label>
-        <input type="number" id="flight-hours" step="0.1" min="0" placeholder="0.0" />
+        <input type="number" id="flight-hours" step="0.01" min="0" placeholder="0.00" />
       </div>
 
       <div class="form-group">
@@ -147,11 +147,11 @@
       <div class="form-group">
         <label for="deployment-type">Type of Deployment:</label>
         <select id="deployment-type">
+          <option value="HRAW Assistance">HRAW Assistance</option>
           <option value="Event">Event</option>
           <option value="TFS">TFS</option>
           <option value="SFS Operation">SFS Operation</option>
           <option value="VIP Transport">VIP Transport</option>
-          <option value="HRAW Assistance">HRAW Assistance</option>
           <option value="DB Sting OP">DB Sting OP</option>
           <option value="Custom">Custom (type below)</option>
         </select>
