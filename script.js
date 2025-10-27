@@ -77,11 +77,11 @@ window.onload = function () {
     updateRemoveOfficerBtn();
 
     const flightHoursInput = document.getElementById('flight-hours');
-if (flightHoursInput) {
-    flightHoursInput.addEventListener('wheel', function(e) {
-        e.preventDefault();
-    });
-}
+    if (flightHoursInput) {
+        flightHoursInput.addEventListener('wheel', function(e) {
+            e.preventDefault();
+        });
+    }
 
     // Auto-fill personnel file link in OT request if saved
     const savedLink = getCookie('personnelFileLink');
@@ -98,6 +98,15 @@ if (flightHoursInput) {
         const routingInput = document.getElementById('ot-routing');
         if (routingInput) {
             routingInput.value = savedRouting;
+        }
+    }
+
+    // Auto-fill signature if saved
+    const savedSignature = getCookie('sfsSignature');
+    if (savedSignature) {
+        const signatureInput = document.getElementById('signature');
+        if (signatureInput) {
+            signatureInput.value = savedSignature;
         }
     }
 
@@ -126,6 +135,15 @@ if (flightHoursInput) {
         if (otOfficerNameInput) {
             otOfficerNameInput.value = savedOtOfficerName;
         }
+    }
+
+    // Add event listener to save signature as it's typed
+    const signatureInput = document.getElementById('signature');
+    if (signatureInput) {
+        signatureInput.addEventListener('input', function () {
+            const value = this.value.trim();
+            setCookie('sfsSignature', value, 9999);
+        });
     }
 
     // Add event listener to save routing number as it's typed
@@ -480,7 +498,7 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
                 const dateDisplay = String(entryDate.getUTCDate()).padStart(2, '0') + '/' + months[entryDate.getUTCMonth()] + '/' + entryDate.getUTCFullYear();
                 const displayDT = formatDateAndTimeUTC(flight.timestamp);
                 const timeOnly = displayDT.split(' ').slice(1).join(' '); // "14:23 UTC"
-                const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(1) : null;
+                const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(2) : null;
                 const safeId = String(flight.id).replace(/'/g, "\\'");
                 const flightType = flight.type || 'ASTRO (Normal)'; // Default to normal if type not set
                 const points = typeof flight.points === 'number' ? flight.points : 0;
@@ -680,8 +698,8 @@ function generateFlightLog() {
 
     // Format date for BBCode (DD/MON/YYYY)
     const formattedDate = String(dateObj.getUTCDate()).padStart(2, '0') + '/' + months[dateObj.getUTCMonth()] + '/' + dateObj.getUTCFullYear();
-    // Show N/A when hours missing, ensure exactly one decimal place
-    const hoursDisplay = (hours !== null && !isNaN(hours)) ? Number(hours.toFixed(1)) : 'N/A';
+    // Show N/A when hours missing, ensure up to two decimal places
+    const hoursDisplay = (hours !== null && !isNaN(hours)) ? Number(hours.toFixed(2)) : 'N/A';
 
     // Define the correct order of activities and their display names
     const orderedActivities = [
@@ -759,8 +777,8 @@ function regenerateFlightLog(encodedMonthKey, flightId) {
     const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     const formattedDate = String(dateObj.getUTCDate()).padStart(2, '0') + '/' + months[dateObj.getUTCMonth()] + '/' + dateObj.getUTCFullYear();
     
-    // Show N/A when hours missing, ensure exactly one decimal place
-    const hoursDisplay = (flight.hours !== null && !isNaN(flight.hours)) ? Number(flight.hours.toFixed(1)) : 'N/A';
+    // Show N/A when hours missing, ensure up to two decimal places
+    const hoursDisplay = (flight.hours !== null && !isNaN(flight.hours)) ? Number(flight.hours.toFixed(2)) : 'N/A';
 
     // Define the correct order of activities and their display names
     const orderedActivities = [
@@ -880,7 +898,6 @@ ${officersHTML}[/list]
 [/list]
 ${flightOfficersSection}
 
-
 [u]1.3[/u] [b]Type of Deployment: [/b] ${finalDeploymentType || 'Event/TFS/SFS Operation/VIP Transport/HRAW Assistance/DB Sting OP/Etc.'}
 
 
@@ -901,6 +918,7 @@ ${flightOfficersSection}
 
 
 [u]3.2[/u] [b]Additional notes: [/b] [indent=25]${additionalNotes || 'NOTES'}[/indent]
+
 [ooc][u]3.2.1[/u] [b]Additional OOC notes: [/b] ${oocNotes || 'NOTES'} [/ooc]
 
 
@@ -1056,7 +1074,7 @@ function updateMonthlyHoursDisplayForElement(display, idPrefix) {
                 const dateDisplay = String(entryDate.getUTCDate()).padStart(2, '0') + '/' + months[entryDate.getUTCMonth()] + '/' + entryDate.getUTCFullYear();
                 const displayDT = formatDateAndTimeUTC(flight.timestamp);
                 const timeOnly = displayDT.split(' ').slice(1).join(' '); // "14:23 UTC"
-                const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(1) : null;
+                const hoursText = (typeof flight.hours === 'number' && !isNaN(flight.hours)) ? flight.hours.toFixed(2) : null;
                 const safeId = String(flight.id).replace(/'/g, "\\'");
                 const flightType = flight.type || 'ASTRO (Normal)'; // Default to normal if type not set
                 const points = typeof flight.points === 'number' ? flight.points : 0;
@@ -1162,9 +1180,4 @@ updateMonthlyHoursDisplay = (function (original) {
         original();
         addAutoFillButtons();
     };
-
 })(updateMonthlyHoursDisplay);
-
-
-
-
